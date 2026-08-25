@@ -129,3 +129,32 @@ button{cursor:pointer}.brand-symbol,.nav-symbol,.line-symbol,.player-symbol{disp
   .native-app .album-card>.artwork{width:136px;height:136px}
   .native-app .mini-player>button.mini-skip{width:32px}
 }
+
+
+/* Musikplay Android V2.2 — system insets + readable notices + Spotify Connect */
+.native-app .toast{
+  left:12px;
+  right:12px;
+  width:auto;
+  transform:none;
+  top:76px;
+  min-height:48px;
+  align-items:flex-start;
+  font-size:12px;
+  line-height:1.45;
+  padding:13px 14px;
+  border-radius:15px;
+}
+.native-app .toast b{font-size:16px;line-height:1;flex:0 0 auto}
+.native-app .topbar{position:sticky;top:0}
+.native-app .device-open{margin-top:12px!important}
+.native-app .no-device{padding:14px;border:1px solid #30372b;background:#0b0d0a;border-radius:15px}
+.native-app .no-device b{display:block;font-size:13px;color:#f0f3ed}
+.native-app .no-device span{display:block;margin-top:5px;color:#8d9588;font-size:11px;line-height:1.5}
+.native-app .device-head{margin-top:12px}
+.native-app .device-head button{min-height:36px;padding:0 10px;border-radius:10px}
+.native-app .device-row{min-height:58px}
+.native-app .status-pill{max-width:105px;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:360px){
+  .native-app .toast{left:9px;right:9px;font-size:11px}
+}

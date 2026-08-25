@@ -1,8 +1,8 @@
-# Musikplay Android V2.1
+# Musikplay Android V2.2
 
 Versión Android de Musikplay optimizada para móvil y Spotify Premium.
 
-## Cambios V2.1
+## Cambios V2.2
 
 - Spotify App Remote SDK 0.8.0 para reproducir, pausar, siguiente y anterior desde Musikplay.
 - La música continúa al bloquear el celular porque Spotify mantiene el servicio de audio en segundo plano.
@@ -34,10 +34,17 @@ El workflow `.github/workflows/build-apk.yml` descarga el SDK oficial Spotify Ap
 
 El artifact final se llama:
 
-`Musikplay-Android-V2.1`
+`Musikplay-Android-V2.2`
 
 ## Firma
 
-La V2.1 usa `app/keystore/musikplay-dev.jks` únicamente como firma de desarrollo/pruebas para mantener un SHA-1 fijo. Antes de publicar en Play Store debe sustituirse por una firma privada de producción.
+La V2.2 usa `app/keystore/musikplay-dev.jks` únicamente como firma de desarrollo/pruebas para mantener un SHA-1 fijo. Antes de publicar en Play Store debe sustituirse por una firma privada de producción.
 
-> Si instalaste V2.0 creada con la firma debug efímera de GitHub, probablemente tendrás que desinstalar V2.0 antes de instalar V2.1 una sola vez.
+> Si instalaste V2.0 creada con la firma debug efímera de GitHub, probablemente tendrás que desinstalar V2.0 antes de instalar V2.2 una sola vez.
+
+
+## V2.2
+- Corrige solapamiento con barra de estado en Android 15.
+- Corrige avisos/toasts que se salían de la pantalla.
+- Reproducción Android usa Spotify Connect/Web API, sin depender del auth popup inestable de App Remote.
+- Spotify oficial mantiene el audio en segundo plano.

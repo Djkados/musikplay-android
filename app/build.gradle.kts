@@ -11,8 +11,8 @@ android {
         applicationId = "com.movieplay.musikplay"
         minSdk = 26
         targetSdk = 35
-        versionCode = 3
-        versionName = "2.1.0"
+        versionCode = 4
+        versionName = "2.2.0"
 
         buildConfigField("String", "SPOTIFY_CLIENT_ID", "\"024afdd700ef406c9845f7d9e27e3a92\"")
         buildConfigField("String", "SPOTIFY_REDIRECT_URI", "\"https://djkados.github.io/musikplay/android-callback.html\"")
@@ -66,5 +66,4 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.webkit:webkit:1.12.1")
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation(files("libs/spotify-app-remote-release-0.8.0.aar"))
 }
