@@ -1,24 +1,12 @@
-MUSIKPLAY ANDROID V2 — PASOS RÁPIDOS
+MUSIKPLAY ANDROID V2.1 — PASOS RÁPIDOS
 
-1) En tu repo actual Djkados/musikplay sube a la raíz:
-   github-pages-patch/android-callback.html
-
-2) En Spotify Developers > Musikplay > Edit agrega este Redirect URI:
-   https://djkados.github.io/musikplay/android-callback.html
-
-3) Crea otro repo en GitHub llamado:
-   musikplay-android
-
-4) Sube TODO el contenido de este ZIP a ese repo.
-
-5) Entra a Actions > Build Musikplay APK.
-   Se ejecuta solo al subir los archivos.
-
-6) Cuando esté verde, descarga el Artifact:
-   Musikplay-Android-V2
-
-7) Descomprime e instala app-debug.apk en Android.
-
-8) Abre Musikplay > Conectar Spotify > Autorizar.
-
-9) Reproduce, sal de Musikplay o bloquea el celular y comprueba el segundo plano.
+1. Spotify Developers > Musikplay > Edit.
+2. Habilita Android.
+3. Android package: com.movieplay.musikplay
+4. SHA-1: 3C:B9:C0:C0:3C:58:8E:FC:15:06:11:23:C7:FA:AF:E2:FE:FE:F1:D1
+5. Conserva los dos Redirect URI existentes.
+6. Sube/reemplaza los archivos de este proyecto en musikplay-android.
+7. GitHub Actions compilará Musikplay-Android-V2.1.
+8. Si Android dice que no puede actualizar la app, desinstala V2.0 e instala V2.1.
+9. Abre Musikplay, conecta Spotify y autoriza el control de reproducción cuando Spotify lo pida.
+10. Prueba: canción > siguiente > anterior > bloquear pantalla.

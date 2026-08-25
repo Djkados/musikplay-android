@@ -10,3 +10,122 @@ button{cursor:pointer}.brand-symbol,.nav-symbol,.line-symbol,.player-symbol{disp
 /* Musikplay V1.2 — Spotify Connect + background mode */
 .background-banner{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:2px 0 24px;padding:11px 12px;background:linear-gradient(120deg,#11180a,#0b0d09);border:1px solid #2d3b11;border-radius:16px}.bg-icon{width:36px;height:36px;border-radius:12px;background:#1a230d;color:var(--lime);display:grid;place-items:center}.background-banner b{display:block;font-size:11px}.background-banner span:not(.bg-icon){display:block;color:#7e8676;font-size:9px;margin-top:2px}.background-banner button{border:0;background:transparent;color:var(--lime);font-size:8px;font-weight:800;letter-spacing:.8px}.hifi-card{border-color:#2b3813;background:linear-gradient(145deg,#11140d,#0d0e0c)}.card-title{font:800 17px Manrope;margin:0 0 12px}.mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mode-switch button{border:1px solid #262a22;background:#0b0c0a;border-radius:14px;padding:11px;text-align:left}.mode-switch button b{display:block;font-size:10px}.mode-switch button span{display:block;color:#686f64;font-size:8px;margin-top:3px}.mode-switch button.on{border-color:#4a6419;background:#151d0d;box-shadow:inset 0 0 0 1px rgba(183,255,25,.05)}.mode-switch button.on b,.mode-switch button.on span{color:var(--lime)}.mode-explain{margin-top:13px;padding-top:12px;border-top:1px solid #20251a}.mode-explain>b{font-size:11px;color:#dce3d7}.mode-explain>p{margin:5px 0 12px;color:#80877b;font-size:9px;line-height:1.5}.device-head{display:flex;align-items:center;justify-content:space-between;margin:9px 0 7px}.device-head>span{font-size:9px;font-weight:800;color:#9da494;text-transform:uppercase;letter-spacing:.8px}.device-head button{border:0;background:#19200f;color:var(--lime);font-size:8px;font-weight:800;border-radius:99px;padding:6px 9px}.device-list{display:flex;flex-direction:column;gap:6px}.device-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;width:100%;padding:9px;border:1px solid #22271d;background:#0a0b09;border-radius:12px;text-align:left}.device-row.selected{border-color:#4b6519;background:#12180c}.device-ico{width:31px;height:31px;border-radius:10px;background:#171c12;color:var(--lime);display:grid;place-items:center;font-size:15px}.device-row b{display:block;font-size:9px}.device-row small{display:block;color:#686f65;font-size:8px;margin-top:2px}.device-row i{font-style:normal;color:#50584b;font-size:10px}.device-row.selected i{color:var(--lime)}.no-device{border:1px dashed #32382d;border-radius:12px;padding:11px;display:flex;flex-direction:column;gap:4px}.no-device b{font-size:9px}.no-device span{font-size:8px;color:#777f71;line-height:1.45}.no-device a{color:var(--lime);font-size:9px;font-weight:800;text-decoration:none;margin-top:5px}.web-status{display:flex;align-items:center;gap:8px;font-size:9px;color:#aab0a4}.playlist-card{border:0;background:transparent;color:inherit;text-align:left;position:relative;padding:0}.playlist-play{position:absolute;right:9px;top:calc(100% - 45px);width:31px;height:31px;border-radius:50%;background:var(--lime);color:#050505;display:grid;place-items:center;font-style:normal;opacity:.92}.mini-player{height:68px}.mini-player>.mini-art-btn{width:51px;height:51px;background:transparent;border:0;border-radius:12px;padding:0;overflow:hidden;flex:0 0 51px}.mini-player>.mini-art-btn .artwork{width:51px;height:51px;border-radius:12px}.mini-copy[data-action]{cursor:pointer}.mini-copy small{display:block;margin-top:2px;color:var(--lime);font-size:7px;font-weight:800;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-player>button.mini-skip{width:28px;height:38px;background:transparent;color:#b6bcb1;font-size:23px}.mini-player>button.mini-toggle{width:39px;height:39px;background:var(--lime);color:#050505}.player-sheet-backdrop{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.78);backdrop-filter:blur(12px);display:flex;align-items:flex-end;justify-content:center}.player-sheet{width:min(100%,560px);max-height:92vh;overflow:auto;background:linear-gradient(180deg,#151a10,#080908 52%);border:1px solid #2a3517;border-radius:28px 28px 0 0;padding:18px 20px calc(24px + var(--safe-bottom));box-shadow:0 -30px 90px rgba(0,0,0,.75)}.sheet-close{display:block;margin:0 auto 13px;border:0;background:#1a1d17;color:#798070;width:42px;height:25px;border-radius:99px;font-size:18px}.sheet-art{width:min(78vw,320px);margin:14px auto 18px}.sheet-art .artwork{width:100%;height:auto;aspect-ratio:1;border-radius:24px;box-shadow:0 22px 70px rgba(0,0,0,.55)}.sheet-copy{text-align:center}.sheet-copy h2{font:800 24px Manrope;margin:0;letter-spacing:-.8px}.sheet-copy p{margin:5px 0 0;color:#888f82;font-size:11px}.sheet-device{margin:17px auto 3px;max-width:360px;display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:center;padding:9px 11px;border:1px solid #29331a;background:#11150d;border-radius:14px}.sheet-device>span{width:34px;height:34px;border-radius:10px;background:#1c240f;color:var(--lime);display:grid;place-items:center}.sheet-device b{display:block;font-size:9px}.sheet-device small{display:block;color:#6f766b;font-size:8px;margin-top:2px}.sheet-controls{display:flex;justify-content:center;align-items:center;gap:23px;margin:19px 0}.sheet-controls button{width:48px;height:48px;border:0;background:#171a15;color:#e7ebe3;border-radius:50%;font-size:30px}.sheet-controls button.main{width:60px;height:60px;background:var(--lime);color:#050505;font-size:20px}.queue{max-width:400px;margin:8px auto 0;padding-top:13px;border-top:1px solid #20241d}.queue-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.queue-title b{font-size:10px}.queue-title span{font-size:8px;color:#687064}.queue-row{display:grid;grid-template-columns:38px 1fr;gap:9px;align-items:center;padding:5px 0}.queue-row .artwork{width:38px;height:38px;border-radius:9px}.queue-row b{display:block;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.queue-row small{display:block;color:#686e65;font-size:8px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(min-width:760px){.player-sheet-backdrop{align-items:center}.player-sheet{border-radius:28px;max-height:90vh}.mini-player{width:720px}.background-banner{padding:13px 15px}}
+
+/* Musikplay Android V2.1 — mobile sizing and native playback polish */
+.native-app body{font-size:16px;-webkit-text-size-adjust:100%}
+.native-app .app-shell{min-height:100dvh}
+.native-app .topbar{height:66px;padding:4px 14px 0;gap:10px;background:linear-gradient(180deg,rgba(5,5,5,.99),rgba(5,5,5,.91),rgba(5,5,5,.64),transparent)}
+.native-app .brand{min-width:0;flex:1;gap:10px;font-size:18px;letter-spacing:-.45px;overflow:visible}
+.native-app .brand-mark{width:40px;height:40px;border-radius:13px;flex:0 0 40px;box-shadow:0 0 24px rgba(183,255,25,.18)}
+.native-app .brand-symbol{font-size:24px;font-weight:900}
+.native-app .brand-word{display:block;white-space:nowrap;line-height:1}
+.native-app .top-actions{flex:0 0 auto}
+.native-app .status-pill{font-size:10px;padding:8px 10px;min-height:34px}
+.native-app .content{padding:8px 15px 136px}
+.native-app .content.with-player{padding-bottom:218px}
+.native-app .hero{padding:24px 2px 22px;gap:10px}
+.native-app .hero h1,.native-app .page-section>h1{font-size:40px;letter-spacing:-1.8px}
+.native-app .hero p{font-size:13px;line-height:1.4}
+.native-app .eyebrow{font-size:10px;letter-spacing:1.6px;margin-bottom:7px}
+.native-app .surprise{padding:12px 13px;border-radius:14px;font-size:11px;min-height:43px}
+.native-app .background-banner{padding:14px 13px;border-radius:18px;margin-bottom:25px;gap:11px}
+.native-app .bg-icon{width:42px;height:42px;border-radius:13px;font-size:18px}
+.native-app .background-banner b{font-size:12px}
+.native-app .background-banner span:not(.bg-icon){font-size:10px;line-height:1.45}
+.native-app .background-banner button{font-size:9px;padding:10px 4px}
+.native-app .section-head{margin:29px 0 13px}
+.native-app .section-head h2{font-size:23px}
+.native-app .section-head button{font-size:11px;min-height:34px}
+.native-app .mix-grid{gap:11px}
+.native-app .mix-card{min-height:168px;padding:16px;border-radius:21px}
+.native-app .mix-index{font-size:42px}
+.native-app .mix-orb{width:42px;height:42px;right:12px;top:12px;font-size:17px}
+.native-app .mix-card h3{font-size:17px}
+.native-app .mix-card p{font-size:11px;line-height:1.35;margin-top:5px}
+.native-app .mix-play{width:39px;height:39px;right:13px;bottom:13px;font-size:15px}
+.native-app .horizontal-cards{gap:13px;padding-bottom:10px}
+.native-app .album-card{min-width:142px;width:142px}
+.native-app .album-card>.artwork{width:142px;height:142px;border-radius:18px}
+.native-app .album-card strong{font-size:13px;margin-top:9px}
+.native-app .album-card>span:not(.fallback){font-size:11px}
+.native-app .float-play{opacity:1;transform:none;top:98px;width:37px;height:37px;font-size:14px}
+.native-app .track-list{gap:4px}
+.native-app .track-row{grid-template-columns:25px 55px 1fr 38px;gap:10px;padding:8px 4px;min-height:68px;border-radius:15px}
+.native-app .track-row .artwork{width:55px;height:55px;border-radius:12px}
+.native-app .track-index{font-size:11px}
+.native-app .track-copy strong{font-size:13px}
+.native-app .track-copy span{font-size:11px;margin-top:4px}
+.native-app .track-action{font-size:15px;width:34px;height:34px;border-radius:50%;background:#141712;color:var(--lime)}
+.native-app .page-section{padding-top:20px}
+.native-app .searchbox{height:58px;border-radius:18px;padding:0 15px}
+.native-app .searchbox .search-symbol{font-size:22px}
+.native-app .searchbox input{font-size:15px}
+.native-app .discover{height:104px;padding:15px;font-size:14px}
+.native-app .library-tabs{gap:7px;overflow-x:auto;scrollbar-width:none}
+.native-app .library-tabs button{font-size:12px;padding:10px 14px;white-space:nowrap}
+.native-app .library-summary>div{padding:15px;border-radius:16px}
+.native-app .library-summary span{font-size:11px}
+.native-app .library-summary b{font-size:18px}
+.native-app .playlist-grid{gap:12px}
+.native-app .playlist-card strong{font-size:13px}
+.native-app .playlist-card>span{font-size:10px}
+.native-app .playlist-play{width:38px;height:38px;font-size:15px}
+.native-app .settings-card{padding:17px;border-radius:20px;margin-bottom:12px}
+.native-app .profile-card{min-height:74px}
+.native-app .avatar{width:47px;height:47px;font-size:17px}
+.native-app .setting-line{gap:12px}
+.native-app .setting-icon{width:42px;height:42px!important;border-radius:13px!important;font-size:20px!important;flex:0 0 42px}
+.native-app .setting-line h3{font-size:14px!important;margin-bottom:3px!important}
+.native-app .setting-line p{font-size:11px!important;line-height:1.45!important}
+.native-app .settings-card .full{min-height:46px;font-size:12px;border-radius:13px}
+.native-app .danger-line{min-height:42px;font-size:11px}
+.native-app .card-title{font-size:20px;margin-bottom:10px}
+.native-app .engine-copy{font-size:11px;line-height:1.55;color:#92998c;margin:0 0 13px}
+.native-app .native-engine{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:13px;border:1px solid #30372b;background:#0b0d0a;border-radius:15px}
+.native-app .native-engine.ready{border-color:#4a6419;background:linear-gradient(135deg,#141c0c,#0b0d0a)}
+.native-app .native-engine-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#1b2115;color:var(--lime);font-weight:900;font-size:17px}
+.native-app .native-engine b{display:block;font-size:12px}
+.native-app .native-engine div>span{display:block;font-size:10px;line-height:1.4;color:#7d8578;margin-top:3px}
+.native-app .native-engine button{border:1px solid #3e5019;background:#16200b;color:var(--lime);border-radius:11px;min-height:38px;padding:0 10px;font-size:10px;font-weight:800}
+.native-app .native-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:11px}
+.native-app .secondary{border:1px solid #30352c;background:#11130f;color:#b8c0b1;font-weight:800}
+.native-app .quality-note{font-size:10px;line-height:1.5}
+.native-app .about{font-size:10px;padding-bottom:12px}
+.native-app .bottom-nav{height:76px;padding:2px 4px max(4px,var(--safe-bottom));background:rgba(5,5,5,.98);border-top-color:#20231d}
+.native-app .bottom-nav button{gap:5px;font-size:10px;font-weight:700;min-width:0}
+.native-app .nav-symbol{font-size:24px;line-height:1;height:27px}
+.native-app .bottom-nav .on .nav-symbol{filter:drop-shadow(0 0 8px rgba(183,255,25,.28))}
+.native-app .mini-player{left:9px;right:9px;bottom:84px;height:76px;padding:8px;border-radius:19px;gap:8px}
+.native-app .mini-player>.mini-art-btn{width:58px;height:58px;flex-basis:58px}
+.native-app .mini-player>.mini-art-btn .artwork{width:58px;height:58px;border-radius:13px}
+.native-app .mini-copy{min-width:0;flex:1}
+.native-app .mini-copy strong{font-size:13px}
+.native-app .mini-copy span{font-size:10px;margin-top:2px}
+.native-app .mini-copy small{font-size:8px;margin-top:3px}
+.native-app .mini-player>button.mini-skip{width:36px;height:44px;font-size:17px;color:#d7ddd2}
+.native-app .mini-player>button.mini-toggle{width:45px;height:45px;font-size:17px;flex:0 0 45px}
+.native-app .mini-player.waiting{padding-right:10px}
+.native-app .waiting-disc{width:48px;height:48px;flex:0 0 48px;border-radius:14px;font-size:20px}
+.native-app .mini-connect{width:auto!important;min-width:72px!important;height:38px!important;border-radius:12px!important;padding:0 10px!important;font-size:10px!important;font-weight:800}
+.native-app .toast{left:12px;right:12px;top:72px;font-size:11px;line-height:1.4;padding:12px 13px;border-radius:14px}
+.native-app .loading{min-height:78vh;gap:15px;font-size:13px}
+.native-app .pulse-logo{width:76px;height:76px;border-radius:22px;font-size:30px;box-shadow:0 0 45px rgba(183,255,25,.18)}
+.native-app .player-sheet{padding:18px 18px calc(24px + var(--safe-bottom))}
+.native-app .sheet-art{width:min(82vw,340px)}
+.native-app .sheet-copy h2{font-size:26px}
+.native-app .sheet-copy p{font-size:12px}
+.native-app .sheet-controls{gap:20px;margin:22px 0}
+.native-app .sheet-controls button{width:54px;height:54px;font-size:19px}
+.native-app .sheet-controls button.main{width:66px;height:66px;font-size:21px}
+@media(max-width:360px){
+  .native-app .topbar{padding-left:11px;padding-right:11px}
+  .native-app .brand{font-size:17px;gap:8px}
+  .native-app .brand-mark{width:37px;height:37px;flex-basis:37px}
+  .native-app .status-pill{font-size:9px;padding:7px 8px}
+  .native-app .content{padding-left:13px;padding-right:13px}
+  .native-app .mix-card{min-height:158px;padding:14px}
+  .native-app .mix-card h3{font-size:15px}
+  .native-app .album-card{min-width:136px;width:136px}
+  .native-app .album-card>.artwork{width:136px;height:136px}
+  .native-app .mini-player>button.mini-skip{width:32px}
+}

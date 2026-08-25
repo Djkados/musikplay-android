@@ -1,75 +1,43 @@
-# Musikplay Android V2
+# Musikplay Android V2.1
 
-Versión Android instalable de Musikplay, con diseño negro + verde limón y la misma experiencia ya validada en la PWA.
+Versión Android de Musikplay optimizada para móvil y Spotify Premium.
 
-## Qué hace
+## Cambios V2.1
 
-- Inicio con recomendaciones basadas en tu Spotify.
-- Búsqueda del catálogo de Spotify.
-- Tus playlists, guardados e historial.
-- Reproductor y controles desde Musikplay.
-- Spotify Connect como motor de audio para mantener la reproducción al bloquear el celular o cambiar de app.
-- Cola, anterior, play/pausa y siguiente.
-- Acceso a YouTube Music como complemento.
-- OAuth Authorization Code + PKCE. No usa ni guarda Client Secret.
+- Spotify App Remote SDK 0.8.0 para reproducir, pausar, siguiente y anterior desde Musikplay.
+- La música continúa al bloquear el celular porque Spotify mantiene el servicio de audio en segundo plano.
+- PlayerState nativo sincronizado con la interfaz de Musikplay.
+- Controles y tipografías más grandes para Android.
+- Mini reproductor y pantalla "Reproduciendo ahora" redimensionados.
+- Ajustes simplificados: ya no depende de que el celular aparezca manualmente como dispositivo Spotify Connect.
+- Icono Android adaptativo nuevo, negro + verde limón.
+- Firma de desarrollo estable para que Spotify reconozca siempre el mismo SHA-1.
 
-> Nota técnica: Spotify no ofrece actualmente un SDK móvil de terceros que entregue el audio crudo a Musikplay. El APK controla la reproducción autorizada de Spotify; Spotify mantiene el audio, caché, integración con llamadas y reproducción de sistema.
+## Configuración requerida en Spotify Developers
 
-## Datos ya configurados
+En la aplicación **Musikplay** del Dashboard de Spotify:
 
-- Spotify Client ID: ya incluido (es un identificador público, no un secreto).
-- Redirect URI Android: `https://djkados.github.io/musikplay/android-callback.html`
-- Package Android: `com.movieplay.musikplay`
+1. Mantén estos Redirect URIs:
+   - `https://djkados.github.io/musikplay/`
+   - `https://djkados.github.io/musikplay/android-callback.html`
+2. Edita la app y habilita **Android** además de Web API / Web Playback SDK.
+3. Agrega el paquete Android:
+   - `com.movieplay.musikplay`
+4. Agrega el SHA-1 de la firma de desarrollo:
+   - `3C:B9:C0:C0:3C:58:8E:FC:15:06:11:23:C7:FA:AF:E2:FE:FE:F1:D1`
 
-## Paso 1 — parche mínimo en el GitHub Pages actual
+La app usa el Client ID ya configurado en el proyecto. No usa ni necesita el Client Secret dentro del APK.
 
-En el repositorio `Djkados/musikplay`, sube SOLO este archivo a la raíz:
+## Compilar con GitHub Actions
 
-`github-pages-patch/android-callback.html`
+El workflow `.github/workflows/build-apk.yml` descarga el SDK oficial Spotify App Remote 0.8.0 directamente desde el release oficial y compila el APK.
 
-Luego comprueba que abra:
+El artifact final se llama:
 
-`https://djkados.github.io/musikplay/android-callback.html`
+`Musikplay-Android-V2.1`
 
-## Paso 2 — Spotify Developer Dashboard
+## Firma
 
-En la app Spotify Developer **Musikplay** que ya existe:
+La V2.1 usa `app/keystore/musikplay-dev.jks` únicamente como firma de desarrollo/pruebas para mantener un SHA-1 fijo. Antes de publicar en Play Store debe sustituirse por una firma privada de producción.
 
-1. Entra a Edit/Settings.
-2. En Redirect URIs agrega exactamente:
-   `https://djkados.github.io/musikplay/android-callback.html`
-3. Conserva también el URI web existente:
-   `https://djkados.github.io/musikplay/`
-4. Guarda.
-
-No hace falta Client Secret.
-
-## Paso 3 — compilar el APK con GitHub Actions
-
-Recomendado: crea un repositorio separado llamado `musikplay-android` y sube TODO el contenido de esta carpeta a la raíz del nuevo repositorio.
-
-El archivo `.github/workflows/build-apk.yml` compila automáticamente el APK.
-
-Después:
-
-1. GitHub > Actions.
-2. Abre `Build Musikplay APK`.
-3. Espera a que termine en verde.
-4. Abre la ejecución terminada.
-5. En Artifacts descarga `Musikplay-Android-V2`.
-6. Dentro está `app-debug.apk`.
-7. Instálalo en el celular.
-
-## Primera prueba
-
-1. Ten Spotify oficial instalado y conectado con tu Premium.
-2. Abre Musikplay Android.
-3. Pulsa Conectar Spotify.
-4. Autoriza en el navegador.
-5. Volverás automáticamente a Musikplay.
-6. Si el celular no aparece como dispositivo, abre Spotify una vez, reproduce/pausa y vuelve a Musikplay.
-7. Reproduce desde Musikplay, bloquea el teléfono y valida que el audio continúe.
-
-## Firma del APK
-
-La Action actual genera un APK de prueba (debug), adecuado para validar Musikplay V2. Cuando la versión esté estable, conviene crear una firma release permanente para que todas las actualizaciones se instalen sobre la anterior sin desinstalar.
+> Si instalaste V2.0 creada con la firma debug efímera de GitHub, probablemente tendrás que desinstalar V2.0 antes de instalar V2.1 una sola vez.
