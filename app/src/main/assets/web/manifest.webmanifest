@@ -1,0 +1,16 @@
+{
+  "name": "Musikplay",
+  "short_name": "Musikplay",
+  "description": "Tu música, tus mixes y tu Spotify Premium en una interfaz personal.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"},
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}
+  ]
+}
