@@ -63,6 +63,7 @@ jobs:
           python patch060/06_tests.py
           python patch060/07_version.py
           python patch060/08_catalog_test_compat.py
+          python patch060/09_schedule_test_compat.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
