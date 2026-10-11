@@ -64,11 +64,6 @@ rep('''if(button.dataset.useInbox){const msg=state.inbox.find(i=>i.id===button.d
 '''if(button.dataset.useInbox){const msg=state.inbox.find(i=>i.id===button.dataset.useInbox);
       if(msg?.autoStatus==="manual_review")return notify("Adjunto o comprobante: revísalo directamente en WhatsApp.");
       if(msg){runtime.selectedInbox=msg.id;''')
-rep('''i.autoStatus==="no_quick_reply"||i.routeMethod==="human_pause"''',
-    '''i.autoStatus==="no_quick_reply"||i.autoStatus==="manual_review"||
-      i.routeMethod==="human_pause"||i.routeMethod==="manual_review"''')
-rep('''i.autoStatus==='no_quick_reply'?' · WhatsApp no ofreció respuesta directa'':''',
-    '''i.autoStatus==='no_quick_reply'?' · WhatsApp no ofreció respuesta directa'':''')
 # Use a distinct operational label for manual review; avoid outdated claims.
 rep('''La pausa cuando respondes tú es manual por ahora.''',
     '''Si el teléfono identifica una respuesta manual tuya, intenta pausar ese chat 1 hora; revisa las pruebas en tu dispositivo.''')
