@@ -24,6 +24,7 @@ s=s.rstrip()[:-1]+'''
     }
     @Test fun businessContextHandlesFollowUpsAndCanSwitchWhenExplicit() {
         val c=config();c.getJSONObject("settings").put("requireAllowlist",false)
+            .getJSONObject("autoReplies").put("normal",true)
         val t=clock("2026-10-10","19:00")
         val food=NativeAutoReplyEngine.decide(c,"business","Nuevo","precio",t,
             rememberedBusiness="tresm")
