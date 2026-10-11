@@ -52,6 +52,7 @@ jobs:
           python patch059/07_signing.py
           python patch059/08_catalog_tests.py
           python patch059/09_activity_review.py
+          python patch059/10_test_compat.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
