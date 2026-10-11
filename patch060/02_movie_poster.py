@@ -14,12 +14,12 @@ poster=[
     item("apple-30","Apple TV+",9000,"apple tv,apple tv plus","30 días",image="apple"),
     item("apple-3m","Apple TV+",20000,"apple tv,apple tv plus","3 meses",image="apple"),
     item("crunchy-30","Crunchyroll",9000,"crunchyroll,crunchy","30 días",image="crunchyroll"),
-    item("disney-basic","Disney+ Básico",6000,"disney,disney plus,disney basico",notes="Con anuncios",image="disney"),
-    item("disney-standard","Disney+ Estándar",10000,"disney,disney plus,disney estandar",notes="Sin anuncios",image="disney"),
+    item("disney-basic","Disney+ Básico",6000,"disney,disney plus,disney basico",duration="30 días",notes="Con anuncios",image="disney"),
+    item("disney-standard","Disney+ Estándar",10000,"disney,disney plus,disney estandar",duration="30 días",notes="Sin anuncios",image="disney"),
     item("flujo-30","Flujo TV",17000,"flujo,flujo tv,flujotv","30 días","Deportes, series y películas","flujo"),
     item("iptv-30","IPTV",14000,"iptv,television iptv","30 días","Deportes, series y películas","iptv"),
-    item("max-standard","Max Estándar",6000,"max,hbo max,max estandar",notes="Con anuncios",image="max"),
-    item("netflix-int","Netflix Internacional",18000,"netflix,neflis,netflis,netflix internacional","Internacional",image="netflix"),
+    item("max-standard","Max Estándar",6000,"max,hbo max,max estandar",duration="30 días",notes="Con anuncios",image="max"),
+    item("netflix-int","Netflix Internacional",18000,"netflix,neflis,netflis,netflix internacional","30 días",image="netflix"),
     item("nuplin-30","Nuplin",30000,"nuplin,nup lin","30 días","Incluye Win+ y ESPN","nuplin"),
     item("paramount-30","Paramount+",14000,"paramount,paramount plus","30 días","Deportes, series y películas","paramount"),
     item("plex-30","Plex",10000,"plex","30 días","Películas y series","plex"),
@@ -56,8 +56,8 @@ migration='''  const flyerUpgradeKey="autoresponder_catalog_poster_20261011";
         if(row.name==="Disney Premium" && row.id==="dp30")row.name=previousNames.dp30;
         if(row.id==="mp30")row.name=previousNames.mp30;
         if(!row.notes)row.notes=previousNotes[row.id]||"";
-        if(row.id==="dp30" && row.duration==="30 días")row.duration="";
-        if(row.id==="mp30" && row.duration==="30 días")row.duration="";
+        if(row.id==="dp30" && !row.duration)row.duration="30 días";
+        if(row.id==="mp30" && !row.duration)row.duration="30 días";
       }
     }
     for(const row of flyerRecords){
