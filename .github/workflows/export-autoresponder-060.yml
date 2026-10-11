@@ -1,0 +1,72 @@
+name: Export AutoResponder v0.6.0 working source
+on:
+  push:
+    branches: [fix/autoresponder-061-learning-safety-assistant]
+    paths:
+      - .github/workflows/export-autoresponder-060.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: signing-source
+          sparse-checkout: app/keystore
+      - name: Prepare v0.6.0 preserving working v0.5.9 and stable signature
+        run: |
+          unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
+          python patch055/apply_capture_back_fix.py
+          python patch056/apply_all_incoming_fix.py
+          mkdir -p source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro
+          cp patch055/NotificationCaptureRegressionTest.kt source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('source/autoresponder-pro/android/app/build.gradle.kts')
+          s=p.read_text().replace('buildTypes {', 'testOptions { unitTests.isIncludeAndroidResources = true }\n    buildTypes {')
+          s += '\ndependencies { testImplementation("org.robolectric:robolectric:4.14.1") }\n'
+          p.write_text(s)
+          p=Path('source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/NotificationCaptureRegressionTest.kt')
+          p.write_text(p.read_text().replace('10001, 0, n, UserHandle.of(0), null,', '10001, 0, 0, n, android.os.Process.myUserHandle(),'))
+          PY
+          python patch057/apply_single_reply_fix.py
+          python patch058/01_engine.py
+          python patch058/02_listener.py
+          python patch058/03_web.py
+          python patch058/04_tests.py
+          python patch059/01_messages.py
+          python patch059/02_native_catalog.py
+          python patch059/03_catalog_state.py
+          python patch059/04_catalog_ui.py
+          python patch059/05_native_human_stats.py
+          python patch059/06_selector.py
+          mkdir -p source/autoresponder-pro/android/app/keystore
+          cp signing-source/app/keystore/musikplay-dev.jks source/autoresponder-pro/android/app/keystore/autoresponder-dev.jks
+          python patch059/07_signing.py
+          python patch059/08_catalog_tests.py
+          python patch059/09_activity_review.py
+          python patch059/10_test_compat.py
+          python patch059/11_metrics_compilation_fix.py
+          python patch059/12_test_import.py
+          python patch060/01_prices_inline.py
+          python patch060/02_movie_poster.py
+          python patch060/03_unavailable.py
+          python patch060/04_native_payments.py
+          python patch060/05_payment_ui.py
+          python patch060/06_tests.py
+          python patch060/07_version.py
+          python patch060/08_catalog_test_compat.py
+          python patch060/09_schedule_test_compat.py
+      - name: Pack latest source
+        run: tar czf autoresponder-pro-060-source.tar.gz -C source autoresponder-pro
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-060-source
+          path: autoresponder-pro-060-source.tar.gz
+          retention-days: 2
+          if-no-files-found: error
