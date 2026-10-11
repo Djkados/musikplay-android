@@ -1,0 +1,42 @@
+name: Export AutoResponder 0.5.8 baseline
+on:
+  push:
+    branches: [fix/autoresponder-059-commercial-assistant]
+    paths:
+      - .github/workflows/export-autoresponder-baseline.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
+          python patch055/apply_capture_back_fix.py
+          python patch056/apply_all_incoming_fix.py
+          mkdir -p source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro
+          cp patch055/NotificationCaptureRegressionTest.kt source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('source/autoresponder-pro/android/app/build.gradle.kts')
+          s=p.read_text().replace('buildTypes {', 'testOptions { unitTests.isIncludeAndroidResources = true }\n    buildTypes {')
+          s += '\ndependencies { testImplementation("org.robolectric:robolectric:4.14.1") }\n'
+          p.write_text(s)
+          p=Path('source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/NotificationCaptureRegressionTest.kt')
+          p.write_text(p.read_text().replace('10001, 0, n, UserHandle.of(0), null,', '10001, 0, 0, n, android.os.Process.myUserHandle(),'))
+          PY
+          python patch057/apply_single_reply_fix.py
+          python patch058/01_engine.py
+          python patch058/02_listener.py
+          python patch058/03_web.py
+          python patch058/04_tests.py
+          tar czf autoresponder-pro-058-source.tar.gz -C source autoresponder-pro
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-058-baseline-source
+          path: autoresponder-pro-058-source.tar.gz
+          if-no-files-found: error
+          retention-days: 1
