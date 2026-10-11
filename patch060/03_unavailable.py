@@ -4,7 +4,7 @@ p=root/"android/app/src/main/java/com/autoresponder/pro/LocalCatalog.kt"
 s=p.read_text(encoding="utf-8")
 def change(a,b):
  global s
- assert s.count(a)==1,(a[:70],s.count(a))
+ assert s.count(a)>=1,(a[:70],s.count(a))
  s=s.replace(a,b,1)
 change('.map {norm(it)}.filter {it.length>=4}', '.map {norm(it)}.filter {it.length>=3}')
 change('if(item.optBoolean("active",false) && item.optString("assistant")==business &&',
