@@ -1,0 +1,30 @@
+name: AutoResponder Pro APK
+on:
+  push:
+    branches: [autoresponder-pro-build-2026]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -q AutoResponder_Pro_v0.4.zip -d source
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - run: node source/autoresponder-pro/tests/smoke.test.cjs && node source/autoresponder-pro/tests/workflow.test.cjs && node source/autoresponder-pro/tests/schedules.test.cjs
+      - run: cd source/autoresponder-pro/android && gradle --no-daemon assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-0.4-debug
+          path: source/autoresponder-pro/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 1
+          if-no-files-found: error
