@@ -106,4 +106,9 @@ new = '''        val messageTime = latest?.getLong("time", sbn.postTime) ?: sbn.
 assert old in s, "stale logic not found"
 s = s.replace(old, new)
 listener.write_text(s)
-print("Patched Android back, WhatsApp MessagingStyle and stale message timestamp")
+# Increment the installed app version so Android identifies this as v0.5.5.
+build = Path("source/autoresponder-pro/android/app/build.gradle.kts")
+gradle_text = build.read_text()
+assert 'versionCode = 9' in gradle_text and 'versionName = "0.5.4"' in gradle_text
+build.write_text(gradle_text.replace('versionCode = 9','versionCode = 10').replace('versionName = "0.5.4"','versionName = "0.5.5"'))
+print("Patched v0.5.5 Android back, capture, timestamp, and version")
