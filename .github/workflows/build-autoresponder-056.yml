@@ -1,0 +1,66 @@
+name: AutoResponder Pro 0.5.6 - reply to all incoming contacts
+on:
+  push:
+    branches: [fix/autoresponder-056-all-incoming]
+    paths:
+      - patch056/apply_all_incoming_fix.py
+      - .github/workflows/build-autoresponder-056.yml
+  pull_request:
+    branches: [autoresponder-pro-build-2026]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack v0.5.4 and apply focused patches
+        run: |
+          unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
+          python patch055/apply_capture_back_fix.py
+          python patch056/apply_all_incoming_fix.py
+          mkdir -p source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro
+          cp patch055/NotificationCaptureRegressionTest.kt source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('source/autoresponder-pro/android/app/build.gradle.kts')
+          s=p.read_text().replace('buildTypes {', 'testOptions { unitTests.isIncludeAndroidResources = true }\n    buildTypes {')
+          s += '\ndependencies { testImplementation("org.robolectric:robolectric:4.14.1") }\n'
+          p.write_text(s)
+          p=Path('source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/NotificationCaptureRegressionTest.kt')
+          p.write_text(p.read_text().replace('10001, 0, n, UserHandle.of(0), null,', '10001, 0, 0, n, android.os.Process.myUserHandle(),'))
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Test web panels and business schedules
+        run: |
+          cd source/autoresponder-pro
+          node tests/smoke.test.cjs
+          node tests/workflow.test.cjs
+          node tests/schedules.test.cjs
+      - name: Run notification regressions and compile Android APK
+        run: |
+          cd source/autoresponder-pro/android
+          gradle --no-daemon testDebugUnitTest assembleDebug --stacktrace
+      - name: Publish test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-056-test-results
+          path: source/autoresponder-pro/android/app/build/test-results/
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Publish APK only if tests and build succeed
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-0.5.6-APK
+          path: source/autoresponder-pro/android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7
+          if-no-files-found: error
