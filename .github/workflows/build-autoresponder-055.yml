@@ -5,6 +5,8 @@ on:
     paths:
       - patch055/apply_capture_back_fix.py
       - .github/workflows/build-autoresponder-055.yml
+  pull_request:
+    branches: [autoresponder-pro-build-2026]
   workflow_dispatch:
 permissions:
   contents: read
