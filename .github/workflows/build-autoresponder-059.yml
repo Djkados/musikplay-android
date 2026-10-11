@@ -50,6 +50,8 @@ jobs:
           mkdir -p source/autoresponder-pro/android/app/keystore
           cp signing-source/app/keystore/musikplay-dev.jks source/autoresponder-pro/android/app/keystore/autoresponder-dev.jks
           python patch059/07_signing.py
+          python patch059/08_catalog_tests.py
+          python patch059/09_activity_review.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
