@@ -54,6 +54,7 @@ jobs:
           python patch059/09_activity_review.py
           python patch059/10_test_compat.py
           python patch059/11_metrics_compilation_fix.py
+          python patch059/12_test_import.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
