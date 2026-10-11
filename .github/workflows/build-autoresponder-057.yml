@@ -22,7 +22,6 @@ jobs:
           unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
           python patch055/apply_capture_back_fix.py
           python patch056/apply_all_incoming_fix.py
-          python patch057/apply_single_reply_fix.py
           mkdir -p source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro
           cp patch055/NotificationCaptureRegressionTest.kt source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/
           python - <<'PY'
@@ -34,6 +33,7 @@ jobs:
           p=Path('source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/NotificationCaptureRegressionTest.kt')
           p.write_text(p.read_text().replace('10001, 0, n, UserHandle.of(0), null,', '10001, 0, 0, n, android.os.Process.myUserHandle(),'))
           PY
+          python patch057/apply_single_reply_fix.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
