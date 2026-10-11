@@ -14,6 +14,12 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - name: Get existing fixed development signing certificate from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: signing-source
+          sparse-checkout: app/keystore
       - name: Prepare v0.5.9 preserving the working v0.5.8 base
         run: |
           unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
@@ -42,7 +48,7 @@ jobs:
           python patch059/05_native_human_stats.py
           python patch059/06_selector.py
           mkdir -p source/autoresponder-pro/android/app/keystore
-          cp app/keystore/musikplay-dev.jks source/autoresponder-pro/android/app/keystore/autoresponder-dev.jks
+          cp signing-source/app/keystore/musikplay-dev.jks source/autoresponder-pro/android/app/keystore/autoresponder-dev.jks
           python patch059/07_signing.py
       - uses: actions/setup-java@v5
         with:
