@@ -82,9 +82,6 @@ rep(web,
   '!authorized(i.channel,i.contact)?',
   'state.settings.requireAllowlist&&!authorized(i.channel,i.contact)?')
 rep(web,
-  'Contacto sin permiso: agréguelo a la lista de pruebas.',
-  'Contacto no autorizado en modo restringido.')
-rep(web,
   'contacto(s) de prueba</p>',
   'contacto(s) en lista opcional</p>')
 rep(web,
