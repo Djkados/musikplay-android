@@ -93,8 +93,7 @@ rep('''["Pendientes por revisar",pending,"En la bandeja local actual","◇"],'''
       ["Aprendizajes por aprobar",(state.learningSuggestions||[]).filter(x=>x.status==="pending").length,
         "Solo expresiones de texto y con aprobación","♧"],''')
 rep('''<button class="btn soft" data-go="catalogo">Editar catálogo y promociones</button>''',
-    '''<button class="btn soft" data-go="aprendizaje">Centro de aprendizaje</button>
-      <button class="btn soft" data-go="catalogo">Editar catálogo y promociones</button>''')
+    '''<button class="btn soft" data-go="aprendizaje">Centro de aprendizaje</button> <button class="btn soft" data-go="catalogo">Editar catálogo y promociones</button>''')
 p.write_text(s,encoding="utf-8")
 (root/"android/app/src/main/assets/app.js").write_text(s,encoding="utf-8")
 for fn in ["web/index.html","android/app/src/main/assets/index.html"]:
