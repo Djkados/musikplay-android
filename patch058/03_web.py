@@ -32,7 +32,7 @@ change("const r=respond(i.channel,i.contact,i.text,!!i.group);return",
         if(i.autoReason==="Fuera de horario")r.status="closed";
       }
       return''')
-change("La app prepara respuestas para todos los contactos que escriban. Con autoenvío activo, responde textos según el negocio y su horario. Las imágenes se revisan.",
+change("La app prepara respuestas a contactos nuevos o guardados. Con autoenvío activo, responde textos entrantes con horarios independientes; las imágenes se revisan.",
 "Ambos WhatsApp atienden MoviePlay y Las Tres M. El motor recuerda el negocio hasta 24 horas por conversación; las imágenes siempre requieren revisión.")
 change("Un solo panel, tres horarios separados.",
 "Dos WhatsApp, dos negocios y tres horarios separados.")
