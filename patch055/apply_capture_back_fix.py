@@ -94,5 +94,16 @@ new = '''        val extras = notification.extras
             ?: extras.getCharSequence(Notification.EXTRA_TEXT)?.toString()?.trim().orEmpty()'''
 assert old in s, "listener extraction changed: inspect manually"
 s=s.replace(old,new)
+# A renewed WhatsApp notification can carry an older MessagingStyle message.
+# Check that message timestamp rather than only the notification posting time.
+old = '''        if (System.currentTimeMillis() - sbn.postTime > 2 * 60 * 1000L) {
+            trace(channel, "stale_skipped"); return
+        }'''
+new = '''        val messageTime = latest?.getLong("time", sbn.postTime) ?: sbn.postTime
+        if (messageTime <= 0L || kotlin.math.abs(System.currentTimeMillis() - messageTime) > 2 * 60 * 1000L) {
+            trace(channel, "stale_skipped"); return
+        }'''
+assert old in s, "stale logic not found"
+s = s.replace(old, new)
 listener.write_text(s)
-print("Patched MainActivity and WhatsAppNotificationListener")
+print("Patched Android back, WhatsApp MessagingStyle and stale message timestamp")
