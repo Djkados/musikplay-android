@@ -1,0 +1,24 @@
+name: Inspect AutoResponder 0.5.4 source
+on:
+  push:
+    branches: [fix/autoresponder-055-capture-back]
+    paths: [.github/workflows/inspect-autoresponder-source.yml]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export source and public Android compile tools
+        run: |
+          mkdir inspection
+          cp AutoResponder_Pro_v0.5.4_Codigo.zip inspection/
+          find "$ANDROID_HOME/build-tools" -name apksigner.jar | sort -V | tail -n 1 | xargs -I{} cp {} inspection/apksigner.jar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autoresponder-054-source-inspection
+          path: inspection/
+          retention-days: 2
+          if-no-files-found: error
