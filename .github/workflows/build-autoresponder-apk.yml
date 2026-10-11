@@ -1,4 +1,4 @@
-name: AutoResponder Pro APK
+name: AutoResponder Pro 0.5 APK
 on:
   push:
     branches: [autoresponder-pro-build-2026]
@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -q AutoResponder_Pro_v0.4.zip -d source
+      - run: unzip -q AutoResponder_Pro_v0.5.zip -d source
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -27,16 +27,17 @@ jobs:
           test -x "$SDK_MANAGER"
           yes | "$SDK_MANAGER" --licenses > /dev/null || true
           "$SDK_MANAGER" --install 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Probar reglas
+      - name: Probar lógica JavaScript
         run: |
           node source/autoresponder-pro/tests/smoke.test.cjs
           node source/autoresponder-pro/tests/workflow.test.cjs
           node source/autoresponder-pro/tests/schedules.test.cjs
-      - name: Compilar APK
-        run: cd source/autoresponder-pro/android && gradle --no-daemon --stacktrace assembleDebug
-      - uses: actions/upload-artifact@v4
+      - name: Probar motor Kotlin y compilar APK
+        run: cd source/autoresponder-pro/android && gradle --no-daemon testDebugUnitTest assembleDebug
+      - name: APK descargable
+        uses: actions/upload-artifact@v4
         with:
-          name: AutoResponder-Pro-0.4-debug
+          name: AutoResponder-Pro-0.5-debug
           path: source/autoresponder-pro/android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 1
+          retention-days: 7
           if-no-files-found: error
