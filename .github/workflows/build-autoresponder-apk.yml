@@ -1,4 +1,4 @@
-name: AutoResponder Pro 0.5.3 APK
+name: AutoResponder Pro 0.5.4 - APK sin firmar
 on:
   push:
     branches: [autoresponder-pro-build-2026]
@@ -10,8 +10,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Descomprimir versión 0.5.3
-        run: unzip -q AutoResponder_Pro_v0.5.3.zip -d source
+      - name: Descomprimir proyecto 0.5.4
+        run: unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -19,7 +19,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-      - name: SDK Android
+      - name: Preparar SDK Android
         run: |
           SDK_ROOT="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
           echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
@@ -28,18 +28,27 @@ jobs:
           test -x "$SDK_MANAGER"
           yes | "$SDK_MANAGER" --licenses >/dev/null || true
           "$SDK_MANAGER" --install 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Pruebas de seguridad, horarios y contactos
+      - name: Verificar JavaScript y reglas
         run: |
+          node --check source/autoresponder-pro/web/app.js
           node source/autoresponder-pro/tests/smoke.test.cjs
           node source/autoresponder-pro/tests/workflow.test.cjs
           node source/autoresponder-pro/tests/schedules.test.cjs
-          node --check source/autoresponder-pro/web/app.js
-      - name: Probar Kotlin y compilar APK
-        run: cd source/autoresponder-pro/android && gradle --no-daemon testDebugUnitTest assembleDebug
-      - name: Publicar instalador
+      - name: Probar Kotlin y compilar release SIN FIRMA
+        run: cd source/autoresponder-pro/android && gradle --no-daemon testDebugUnitTest assembleRelease
+      - name: Preparar APK alineado y herramienta pública de firma
+        run: |
+          mkdir -p signing
+          ZIPALIGN="$ANDROID_HOME/build-tools/35.0.0/zipalign"
+          SIGNER="$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar"
+          "$ZIPALIGN" -f -p 4 source/autoresponder-pro/android/app/build/outputs/apk/release/app-release-unsigned.apk signing/AutoResponder_Pro_0.5.4_UNSIGNED.apk
+          "$ZIPALIGN" -c -v 4 signing/AutoResponder_Pro_0.5.4_UNSIGNED.apk
+          cp "$SIGNER" signing/apksigner.jar
+          java -jar signing/apksigner.jar --version
+      - name: Descargar resultados
         uses: actions/upload-artifact@v4
         with:
-          name: AutoResponder-Pro-0.5.3-Android
-          path: source/autoresponder-pro/android/app/build/outputs/apk/debug/app-debug.apk
+          name: AutoResponder-0.5.4-unsigned-and-signing-tool
+          path: signing/
           retention-days: 7
           if-no-files-found: error
