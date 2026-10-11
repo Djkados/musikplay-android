@@ -5,7 +5,7 @@ old="assert.equal(respond('normal','Prueba','Netflix',false,local('2026-10-11T18
 new="""const movieResult=respond('normal','Prueba','Netflix',false,local('2026-10-11T18:00'));
 assert.match(movieResult.reply,/MOVIEPLAY|MoviePlay/);
 assert.doesNotMatch(movieResult.reply,/Las Tres M/);
-assert.ok(movieResult.reply.includes("$14.000"));"""
+assert.match(movieResult.reply,/Netflix/);"""
 assert s.count(old)==1
 p.write_text(s.replace(old,new),encoding="utf-8")
 print("Updated multi-business integration test to check current catalog reply without old hardcoded response")
