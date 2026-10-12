@@ -1,0 +1,39 @@
+name: Download AutoResponder Pro v0.6.4 outside ChatGPT
+on:
+  push:
+    branches: [fix/autoresponder-064-conversation-control]
+    paths:
+      - .github/workflows/publish-autoresponder-064.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain validated v0.6.4 APK from successful build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38223186412 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.4-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.4.apk
+          echo "46678f834cbd5c7699ad54a98254dad33d338c229c3db8ed1ce16f29c9fc1660  release-files/AutoResponder-Pro-v0.6.4.apk" | sha256sum -c -
+      - name: Publish the same APK as a direct-download release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.4
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.4.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.4.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "AutoResponder Pro v0.6.4 - Android APK" \
+              --notes "Compiled APK for Android. Incremental update from AutoResponder Pro v0.6.3, using the same stable development certificate. No modification to production/main."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
