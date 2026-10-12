@@ -1,0 +1,39 @@
+name: Download AutoResponder Pro v0.6.5 outside ChatGPT
+on:
+  push:
+    branches: [fix/autoresponder-065-seller-human-priority]
+    paths:
+      - .github/workflows/publish-autoresponder-065.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download validated Android APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38308146785 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.5-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.5.apk
+          echo "8e68a1088d3656b10978ccff6bfd1a3e98ef69240f14b8487edb1b570c8867d3  release-files/AutoResponder-Pro-v0.6.5.apk" | sha256sum -c -
+      - name: Publish direct APK download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.5
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.5.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.5.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "AutoResponder Pro v0.6.5 - Android APK" \
+              --notes "AutoResponder Pro 0.6.5. Short natural replies for everyone; sellers only thanks, renewal acknowledgements, and payment methods; repeated identical renewal requests limited to 1 hour. Shared payment details between MoviePlay and Las Tres M. Build tests, app ID and stable signing passed. Production/main unchanged."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
