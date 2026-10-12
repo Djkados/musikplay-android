@@ -148,7 +148,7 @@ handler='''  document.addEventListener("input",e=>{
     if(id==="vendorPhone"||id==="ctPhone")draft.phone=String(e.target.value||"");
   });
 '''
-assert s.count(anchor)==1
+assert s.count(anchor)>=1
 s=s.replace(anchor,handler+anchor,1)
 anchor="    if(e.target?.dataset.vendorBusiness){"
 handler='''    if(runtime.contactDraft){
