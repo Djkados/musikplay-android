@@ -101,6 +101,7 @@ jobs:
           python patch065/13_renewals.py
           python patch065/14_payment_business_followup.py
           python patch065/15_renewal_tests.py
+          python patch065/16_imports.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
