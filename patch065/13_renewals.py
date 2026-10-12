@@ -19,6 +19,10 @@ internal object RenewalReplies {
             .replace(Regex("[^a-z0-9 ]+")," ")
             .replace(Regex("\\s+")," ").trim()
 
+    // Digest input only: individual renewal requests can arrive minutes apart.
+    // Chat content and customer identifiers are never saved in plain text.
+    fun repeatIdentity(text:String):String=clean(text)
+
     fun isRequest(text:String):Boolean {
         val n=clean(text)
         if(n.length !in 6..180)return false
@@ -86,10 +90,13 @@ p.write_text(s,encoding="utf-8")
 p=native/"WhatsAppNotificationListener.kt"
 s=p.read_text(encoding="utf-8")
 a='''                    val courtesyKey=fingerprint("courtesy|$channel|$contact")'''
-b='''                    val renewalKey=fingerprint("renewal|$channel|$contact")
+b='''                    // Only identical renewal requests have a 1-hour repeat limit.
+                    // Different customer names, service or sale IDs get new keys.
+                    val renewalKey=fingerprint("renewal|$channel|$contact|"+
+                        RenewalReplies.repeatIdentity(message))
                     val renewalAt=cadencePrefs.getLong(renewalKey,0L)
                     val renewalCooling=decision.routeSource=="renewal" &&
-                        AssistantCadence.recent(now,renewalAt,12L*60L*60L*1000L)
+                        AssistantCadence.recent(now,renewalAt,60L*60L*1000L)
 
                     val courtesyKey=fingerprint("courtesy|$channel|$contact")'''
 assert s.count(a)==1
@@ -110,7 +117,7 @@ assert s.count(a)==1
 s=s.replace(a,b,1)
 a='''                            courtesyCooling -> "courtesy_throttled"'''
 b='''                            courtesyCooling -> "courtesy_throttled"
-                            renewalCooling -> "renewal_cooldown_12h"'''
+                            renewalCooling -> "renewal_cooldown_1h"'''
 assert s.count(a)==1
 s=s.replace(a,b,1)
 a='''                                if(decision.needsChoice)edit.putLong(menuKey,now)'''
@@ -147,9 +154,9 @@ assert s.count(a)==1
 s=s.replace(a,b,1)
 a='''      repeat_answer_suppressed:'Respuesta idéntica ya enviada hace poco','''
 b='''      repeat_answer_suppressed:'Respuesta idéntica ya enviada hace poco',
-      renewal_cooldown_12h:'Ya confirmé que revisaré esta renovación; no repetir durante 12 horas','''
+      renewal_cooldown_1h:'Ya confirmé que revisaré esta renovación; no repetir durante una hora','''
 assert s.count(a)==1
 s=s.replace(a,b,1)
 p.write_text(s,encoding="utf-8")
 (root/"android/app/src/main/assets/app.js").write_text(s,encoding="utf-8")
-print("Renewal acknowledgment for customers and sellers, no auto-activation, 12h cooldown and payment/media exclusions")
+print("Renewal acknowledgment for customers and sellers, no auto-activation, one-hour per-request cooldown and payment/media exclusions")
