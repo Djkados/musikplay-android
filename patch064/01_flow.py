@@ -197,7 +197,8 @@ a='''        GuidedAssistant.suggest(config,business,m,now.toLocalDate())?.let {
 b='''        ConversationFlow.followUp(config,business,m,rememberedProductId,
             rememberedProductStage,rememberedQuantity,now.toLocalDate())?.let {
             return Decision(text=it.text,business=business,department=unit,reason=it.reason,
-                routeSource="memory",memoryProductId=it.productId,
+                routeSource="memory",paymentMenu=it.stage=="payment_menu",
+                memoryProductId=it.productId,
                 memoryStage=it.stage,memoryQuantity=it.quantity)
         }
         GuidedAssistant.suggest(config,business,m,now.toLocalDate())?.let {'''
