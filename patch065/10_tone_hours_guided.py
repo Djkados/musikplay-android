@@ -8,18 +8,18 @@ entries=list(re.finditer(pattern,js))
 assert len(entries)==3,("Expected MoviePlay sales, support, Las Tres M",len(entries))
 oldTexts=[json.loads(x.group(1)) for x in entries]
 short=[
-    """¡Hola! 😊 Ahora estoy fuera del horario de ventas.
+    """🎬 *MOVIEPLAY*\n\n¡Hola! 😊 Ahora estoy fuera del horario de ventas.
 
 🕘 Atiendo todos los días de 9:00 a. m. a 10:00 p. m.
 
 En cuanto regrese, te respondo. 💚""",
-    """¡Hola! 👋 Ahora estoy fuera del horario de soporte.
+    """🛟 *SOPORTE MOVIEPLAY*\n\n¡Hola! 👋 Ahora estoy fuera del horario de soporte.
 
 🕘 Lunes a sábado: 9:00 a. m. a 10:00 p. m.
 🕘 Domingos y festivos: 9:00 a. m. a 5:00 p. m.
 
 En cuanto esté disponible, te respondo.""",
-    """¡Hola! 😊 Ahora no estoy atendiendo pedidos.
+    """🍔 *LAS TRES M*\n\n¡Hola! 😊 Ahora no estoy atendiendo pedidos.
 
 🍔 Atiendo sábados y domingos de 6:00 p. m. a 10:30 p. m.
 📍 Barrio Ciudadela, La Ceja
