@@ -98,6 +98,9 @@ jobs:
           python patch065/10_tone_hours_guided.py
           python patch065/11_tone_tests.py
           python patch065/12_version.py
+          python patch065/13_renewals.py
+          python patch065/14_payment_business_followup.py
+          python patch065/15_renewal_tests.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
