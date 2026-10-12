@@ -7,6 +7,3 @@ s=s.replace(anchor,anchor+"import org.junit.Assert.assertFalse\nimport org.junit
 p.write_text(s,encoding="utf-8")
 print("New seller/renewal tests import JUnit assertFalse and assertNotEquals")
 
-import runpy
-runpy.run_path('patch065/17_shared_payment_1h.py')
-runpy.run_path('patch065/18_shared_tests.py')
