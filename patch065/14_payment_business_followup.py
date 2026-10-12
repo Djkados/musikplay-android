@@ -67,7 +67,8 @@ rep('''                                        .put("pendingPaymentMenu",false)
                                         .put("pendingPaymentBusiness",
                                             decision.routeSource=="payment_business_prompt")
                                         .put("productId","")''')
-rep('''                                        .put("pendingChoice",false).put("promptAt",0L)
+rep('''                                        .put("pendingChoice",false)
+                                        .put("promptAt",0L)
                                         .put("pendingPaymentMenu",decision.paymentMenu)''',
 '''                                        .put("pendingChoice",false).put("promptAt",0L)
                                         .put("pendingPaymentBusiness",false)
