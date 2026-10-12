@@ -32,7 +32,8 @@ s=s.rstrip()[:-1]+'''
         assertTrue(disabled.text.contains("NO DISPONIBLE POR EL MOMENTO"))
     }
 }
-'''.replace('"$11.000"','"\\$11.000"'),encoding="utf-8")
+'''
+p.write_text(s.replace('"$11.000"','"\\$11.000"'),encoding="utf-8")
 
 p=native/"GuidedAssistantTest.kt"
 s=p.read_text(encoding="utf-8")
