@@ -1,0 +1,39 @@
+name: Public APK download - AutoResponder Pro v0.6.7
+on:
+  push:
+    branches: [fix/autoresponder-067-vendor-save-both-whatsapps]
+    paths:
+      - .github/workflows/publish-autoresponder-067.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Obtain validated AutoResponder Pro APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38317587812 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.7-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.7.apk
+          echo "3682be09c27565890e18763363c651a0d934fb53a68d0a040d4b3ee226179a5c  release-files/AutoResponder-Pro-v0.6.7.apk" | sha256sum -c -
+      - name: Publish official downloadable APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.7
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.7.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.7.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "AutoResponder Pro v0.6.7 - Android APK" \
+              --notes "AutoResponder 0.6.7: vendor save verified in UI, persistent feedback, both WhatsApp default for vendor role; corrects migration of old vendor channel to both. Same stable Android signing certificate and package, can update v0.6.6 in place. All tests passed; production/main unchanged."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
