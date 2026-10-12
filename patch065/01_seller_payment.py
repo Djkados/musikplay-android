@@ -71,8 +71,8 @@ needle='''        val intro=if(method=="menu"){'''
 seller='''        // Seller messages are deliberately short and written in a personal
         // voice. The standard customer templates remain unchanged.
         if(casual && method=="menu"){
-            return Result("Claro 😊 ¿Por cuál medio te queda más fácil?\\\\n\\\\n"+
-                "1️⃣ Nequi\\\\n2️⃣ Bancolombia\\\\n3️⃣ DaviPlata\\\\n4️⃣ Llave\\\\n\\\\n"+
+            return Result("Claro 😊 ¿Por cuál medio te queda más fácil?\\n\\n"+
+                "1️⃣ Nequi\\n2️⃣ Bancolombia\\n3️⃣ DaviPlata\\n4️⃣ Llave\\n\\n"+
                 "Dime el número o el medio y te paso los datos.",isMenu=true)
         }
         if(casual){
@@ -81,9 +81,9 @@ seller='''        // Seller messages are deliberately short and written in a per
                     "DaviPlata" to davi).mapNotNull { (label,record)->
                     record?.optString("key")?.takeIf{it.isNotBlank()}?.let{label+": "+it}
                 }
-                return Result("Claro 🙌 Estas son las llaves que manejo:\\\\n\\\\n"+
-                    keys.joinToString("\\\\n")+
-                    "\\\\n\\\\nCuando transfieras, me envías el comprobante y lo reviso.")
+                return Result("Claro 🙌 Estas son las llaves que manejo:\\n\\n"+
+                    keys.joinToString("\\n")+
+                    "\\n\\nCuando transfieras, me envías el comprobante y lo reviso.")
             }
             val title=when(method) {
                 "nequi"->"Nequi"
@@ -104,7 +104,7 @@ seller='''        // Seller messages are deliberately short and written in a per
             if(key.isNotEmpty())pieces.add("🔑 Llave: "+key)
             pieces.add("")
             pieces.add("Cuando transfieras, me envías el comprobante y lo reviso. 🙌")
-            return Result(pieces.joinToString("\\\\n"),choice=shortcut!=null)
+            return Result(pieces.joinToString("\\n"),choice=shortcut!=null)
         }
         val intro=if(method=="menu"){'''
 assert s.count(needle)==1
