@@ -31,31 +31,31 @@ s=s[:start]+'''    @Test fun paymentQuestionUsesSameMethodsImmediatelyForBothBus
         c.getJSONObject("settings").put("requireAllowlist",false)
         c.put("payments",JSONObject().put("movieplay",
             JSONObject().put("holder","Titular de prueba")
-                .put("nequi",JSONObject().put("number","39999999999"))
+                .put("nequi",JSONObject().put("number","3000000000"))
                 .put("bancolombia",JSONObject().put("number","123456789"))
                 .put("daviplata",JSONObject().put("number","3111111111")))
-            .put("tresm",JSONObject().put("nequi",JSONObject().put("number","9999999999"))))
+            .put("tresm",JSONObject().put("nequi",JSONObject().put("number","2888888888"))))
         val at=clock("2026-10-12","19:00")
         val generic=NativeAutoReplyEngine.decide(c,"business","Cliente nuevo",
             "¿Dónde te transfiero?",at)
         assertEquals("payment_specific",generic.routeSource)
         assertTrue(generic.paymentMenu)
         assertTrue(generic.text!!.contains("MEDIOS DE PAGO"))
-        assertFalse(generic.text!!.contains("39999999999"))
+        assertFalse(generic.text!!.contains("3000000000"))
         assertFalse(generic.text!!.contains("¿Es para"))
         val pickNequi=NativeAutoReplyEngine.decide(c,"business","Cliente nuevo","1",at,
             paymentMenuPending=true)
         assertEquals("payment_choice",pickNequi.routeSource)
-        assertTrue(pickNequi.text!!.contains("39999999999"))
-        assertFalse(pickNequi.text!!.contains("9999999999"))
+        assertTrue(pickNequi.text!!.contains("3000000000"))
+        assertFalse(pickNequi.text!!.contains("2888888888"))
         val pickBank=NativeAutoReplyEngine.decide(c,"business","Cliente nuevo","2",at,
             paymentMenuPending=true)
         assertTrue(pickBank.text!!.contains("123456789"))
         assertEquals("payment_choice",pickBank.routeSource)
         val withFoodContext=NativeAutoReplyEngine.decide(c,"business",
             "Cliente de comida","Nequi",at,rememberedBusiness="tresm")
-        assertTrue(withFoodContext.text!!.contains("39999999999"))
-        assertFalse(withFoodContext.text!!.contains("9999999999"))
+        assertTrue(withFoodContext.text!!.contains("3000000000"))
+        assertFalse(withFoodContext.text!!.contains("2888888888"))
         val handoff=NativeAutoReplyEngine.decide(c,"business","Cliente sin negocio",
             "Dónde te transfiero",at,humanHandoff=true)
         assertTrue(handoff.text!!.contains("MEDIOS DE PAGO"))
