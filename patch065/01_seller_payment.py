@@ -57,7 +57,7 @@ assert s.count(needle)==1
 s=s.replace(needle,replacement,1)
 # Add common, more natural payment requests that do not contain bank names,
 # e.g. "donde te transfiero" without confusing statements of a past payment.
-needle='''            "\\ba donde transfiero\\b|\\bpagar el servicio\\b"'''
+needle=r'''            "\\ba donde transfiero\\b|\\bpagar el servicio\\b"'''
 # Source contains Kotlin escaped regex sequences: in Python these are literal \\b
 if s.count(needle)!=1:
     raise AssertionError(("payment anchor",s.count(needle)))
