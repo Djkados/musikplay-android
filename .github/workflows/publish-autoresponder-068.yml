@@ -1,0 +1,39 @@
+name: Download AutoResponder Pro v0.6.8 outside ChatGPT
+on:
+  push:
+    branches: [fix/autoresponder-068-android-contact-picker]
+    paths:
+      - .github/workflows/publish-autoresponder-068.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve already verified APK and check SHA256
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38320091594 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.8-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.8.apk
+          echo "4758b82ebd13693f986a7babab28d78fe2a46a488fb7812e8c9f625f8559c9e7  release-files/AutoResponder-Pro-v0.6.8.apk" | sha256sum -c -
+      - name: Publish direct browser APK download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.8
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.8.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.8.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "AutoResponder Pro v0.6.8 - Android APK" \
+              --notes "v0.6.8 fixes Android Contacts selected name/phone disappearing after returning to AutoResponder. The app retains the selected contact through WebView resume and temporary activity recreation; user must confirm Guardar vendedor. Existing vendor role on both WhatsApps and previous features are preserved. Native Kotlin and UI regressions, signature and version checks passed. No production/main changes."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
