@@ -31,7 +31,7 @@ internal object RenewalReplies {
             .containsMatchIn(n))return false
 
         val verb=Regex("\\b(renueva|renuevame|renuevamelo|renuevalo|renuevala|"+
-            "renueven|renuevenme|renovame|renovar|renovarme|renovacion)\\b")
+            "renueven|renuevenme|renuevas|renovame|renovar|renovarme|renovacion)\\b")
         if(!verb.containsMatchIn(n))return false
 
         if(Regex("^(cuanto|como|cuando|donde|cual|por que|porque|que precio)\\b")
@@ -128,7 +128,7 @@ b='''  function renewalRequest(text){
     if(n.length<6||n.length>180)return false;
     if(/\\b(no renovar|no renueva|no renueves|no quiero renovar|cancelar (?:la )?renovacion|ya renove|ya me renovaron|ya esta renovado|renovacion confirmada|renovado|renovada|cuando renueva|cuando se renueva|cuanto cuesta renovar|cuanto vale renovar|precio de renovacion|como renovar|como renuevo|fecha de renovacion|cuando vence)\\b/.test(n))return false;
     if(/^\\s*(cuanto|como|cuando|donde|cual|por que|porque|que precio)\\b/.test(n))return false;
-    if(!/\\b(renueva|renuevame|renuevamelo|renuevalo|renuevala|renueven|renuevenme|renovame|renovar|renovarme|renovacion)\\b/.test(n))return false;
+    if(!/\\b(renueva|renuevame|renuevamelo|renuevalo|renuevala|renueven|renuevenme|renuevas|renovame|renovar|renovarme|renovacion)\\b/.test(n))return false;
     return /^(hola|buenas|oye|oe|ey|por favor|porfa|porfis|listo|quiero|quisiera|necesito|me puedes|me podrias|puedes|podrias|favor|vamos a|me ayudas a|te pido|hazme|hagame|hagamos|dale|otra vez|me hace el favor y|te escribo para|deseo|si|bueno)\\b/.test(n) ||
       n.startsWith("renuev") || n.startsWith("renov") ||
       /\\bme renuevas\\b|\\bque me renueven\\b|\\bme lo renuevas\\b/.test(n);
