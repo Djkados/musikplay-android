@@ -100,8 +100,10 @@ callback='''  // Android Contact Picker. Returning to the app triggers visibilit
       normalizedPhone.slice(-4))+(normalizedPhone?" · Celular terminado en "+
       normalizedPhone.slice(-4):" · Sin teléfono válido")+
       ". Revisa los datos y pulsa Guardar vendedor.";
+    if(!["vendedores","contactos"].includes(runtime.route))
+      setRoute("vendedores");
+    else render();
     if(["vendedores","contactos"].includes(runtime.route)){
-      render();
       const editor=document.getElementById(runtime.route==="vendedores"?
         "vendorEditor":"ctName");
       editor?.scrollIntoView?.({block:"nearest"});
