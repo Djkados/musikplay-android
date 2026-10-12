@@ -106,17 +106,9 @@ p.write_text(s,encoding="utf-8")
 # The user approved an exact thank-you message. Do not change it.
 p=native/"PaymentReplies.kt"
 s=p.read_text(encoding="utf-8")
-old='''return Result("Claro 😊 ¿Por cuál medio te queda más fácil?\\\\n\\\\n"+
-                "1️⃣ Nequi\\\\n2️⃣ Bancolombia\\\\n3️⃣ DaviPlata\\\\n4️⃣ Llave\\\\n\\\\n"+
-                "Dime el número o el medio y te paso los datos.",isMenu=true)'''
-# In generated Kotlin source, Python unescaping is applied to the patch. Handle
-# both one and two backslash forms, avoiding unexpected changes.
-if s.count(old)!=1:
-    old=old.replace("\\\\\\\\n","\\\\n")
-if s.count(old)!=1:raise AssertionError("seller payment menu changed")
-new=old.replace('Claro 😊 ¿Por cuál medio te queda más fácil?','Claro 😊 ¿Por cuál medio te queda más fácil?').replace('1️⃣ Nequi','💳 *MEDIOS DE PAGO*\\\\n\\\\n1️⃣ Nequi')
-# Unit test checks that a payment menu says MEDIOS DE PAGO even in the casual tone.
-s=s.replace(old,new,1)
+needle='"1️⃣ Nequi'
+assert s.count(needle)==1,("Seller payment option text unexpectedly changed",s.count(needle))
+s=s.replace(needle,'"💳 *MEDIOS DE PAGO*\\n\\n1️⃣ Nequi',1)
 # Ensure the no-account fallback doesn't promise human delivery or confirmation.
 s=s.replace('''"$title\\n\\n💳 Los datos de pago para este negocio se confirman directamente con nuestro equipo.\\n\\n" +
             "Escríbenos cuando estés listo para pagar. 😊"''',
