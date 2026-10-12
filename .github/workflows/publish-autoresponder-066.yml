@@ -1,0 +1,39 @@
+name: Download AutoResponder Pro v0.6.6 outside ChatGPT
+on:
+  push:
+    branches: [fix/autoresponder-066-vendors-learning-intents]
+    paths:
+      - .github/workflows/publish-autoresponder-066.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve previously tested APK and verify SHA-256
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38315997725 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.6-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.6.apk
+          echo "16081dad317d6f17539f3291572e5d4a3d94d711d8ddf0767a39d0e355c47628  release-files/AutoResponder-Pro-v0.6.6.apk" | sha256sum -c -
+      - name: Publish direct Android APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.6
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.6.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.6.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "AutoResponder Pro v0.6.6 - Android APK" \
+              --notes "AutoResponder v0.6.6: dedicated vendor/revendedor management via nav and inbox, manually teach phrases to products, existing rules, payment options, Nequi, Bancolombia, DaviPlata, keys, gratitude, renewal and human review. Learning is supervised. Media, payment proofs and credentials excluded. Compiled, Android tested and signed with same stable development key. Production/main unchanged."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
