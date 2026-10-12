@@ -98,7 +98,7 @@ a='''                        setOf("choice","payment_choice","payment_specific",
 b='''                        setOf("choice","payment_choice","payment_specific","courtesy","renewal") &&'''
 assert s.count(a)==1
 s=s.replace(a,b,1)
-a='''                            setOf("choice","detected","payment_choice","payment_specific","courtesy")'''
+a='''                            setOf("choice","detected","payment_choice","payment_specific","courtesy","memory")'''
 b='''                            setOf("choice","detected","payment_choice","payment_specific","courtesy","renewal")'''
 assert s.count(a)==1
 s=s.replace(a,b,1)
