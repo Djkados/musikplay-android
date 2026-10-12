@@ -1,0 +1,143 @@
+name: AutoResponder Pro 0.6.5 - seller human-priority and conversational tone
+on:
+  push:
+    branches: [fix/autoresponder-065-seller-human-priority]
+    paths:
+      - patch065/**
+      - .github/workflows/build-autoresponder-065.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get existing fixed development signing certificate from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: signing-source
+          sparse-checkout: app/keystore
+      - name: Prepare gratitude fix from tested v0.6.1 and stable Android signature
+        run: |
+          unzip -q AutoResponder_Pro_v0.5.4_Codigo.zip -d source
+          python patch055/apply_capture_back_fix.py
+          python patch056/apply_all_incoming_fix.py
+          mkdir -p source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro
+          cp patch055/NotificationCaptureRegressionTest.kt source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('source/autoresponder-pro/android/app/build.gradle.kts')
+          s=p.read_text().replace('buildTypes {', 'testOptions { unitTests.isIncludeAndroidResources = true }\n    buildTypes {')
+          s += '\ndependencies { testImplementation("org.robolectric:robolectric:4.14.1") }\n'
+          p.write_text(s)
+          p=Path('source/autoresponder-pro/android/app/src/test/java/com/autoresponder/pro/NotificationCaptureRegressionTest.kt')
+          p.write_text(p.read_text().replace('10001, 0, n, UserHandle.of(0), null,', '10001, 0, 0, n, android.os.Process.myUserHandle(),'))
+          PY
+          python patch057/apply_single_reply_fix.py
+          python patch058/01_engine.py
+          python patch058/02_listener.py
+          python patch058/03_web.py
+          python patch058/04_tests.py
+          python patch059/01_messages.py
+          python patch059/02_native_catalog.py
+          python patch059/03_catalog_state.py
+          python patch059/04_catalog_ui.py
+          python patch059/05_native_human_stats.py
+          python patch059/06_selector.py
+          mkdir -p source/autoresponder-pro/android/app/keystore
+          cp signing-source/app/keystore/musikplay-dev.jks source/autoresponder-pro/android/app/keystore/autoresponder-dev.jks
+          python patch059/07_signing.py
+          python patch059/08_catalog_tests.py
+          python patch059/09_activity_review.py
+          python patch059/10_test_compat.py
+          python patch059/11_metrics_compilation_fix.py
+          python patch059/12_test_import.py
+          python patch060/01_prices_inline.py
+          python patch060/02_movie_poster.py
+          python patch060/03_unavailable.py
+          python patch060/04_native_payments.py
+          python patch060/05_payment_ui.py
+          python patch060/06_tests.py
+          python patch060/07_version.py
+          python patch060/08_catalog_test_compat.py
+          python patch060/09_schedule_test_compat.py
+          python patch061/01_safety.py
+          python patch061/02_listener_media.py
+          python patch061/03_guided_assistant.py
+          python patch061/04_learning_engine.py
+          python patch061/05_learning_ui.py
+          python patch061/06_learning_actions.py
+          python patch061/07_browser_guard_guided.py
+          python patch061/08_regression_tests.py
+          python patch061/09_version.py
+          python patch061/10_availability_fix.py
+          python patch062/01_courtesy.py
+          python patch062/02_tests.py
+          python patch063/01_cadence.py
+          python patch063/02_tests.py
+          python patch064/01_flow.py
+          python patch064/02_listener_memory.py
+          python patch064/03_cadence_settings.py
+          python patch064/04_human_bridge.py
+          python patch064/05_human_ui.py
+          python patch064/06_learning_diagnostics.py
+          python patch064/07_tests.py
+          python patch064/08_version.py
+          python patch065/01_seller_payment.py
+          python patch065/02_auto_human_pause.py
+          python patch065/03_seller_contacts.py
+          python patch065/04_seller_controls_ui.py
+          python patch065/05_payment_simulator.py
+          python patch065/06_human_bridge_ui.py
+          python patch065/07_core_tests.py
+          python patch065/08_handoff_payment_whitelist.py
+          python patch065/09_tone_all.py
+          python patch065/10_tone_hours_guided.py
+          python patch065/11_tone_tests.py
+          python patch065/12_version.py
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Check web app and business schedule regressions
+        run: |
+          cd source/autoresponder-pro
+          node --check web/app.js
+          node --check web/schedule-engine.js
+          node --check web/learning-engine.js
+          node tests/smoke.test.cjs
+          node tests/learning.test.cjs
+          node tests/workflow.test.cjs
+          node tests/schedules.test.cjs
+      - name: Check native replies, Android integration and compile APK
+        run: |
+          cd source/autoresponder-pro/android
+          gradle --no-daemon testDebugUnitTest assembleDebug --stacktrace
+      - name: Verify repeatable signing and exact app ID
+        run: |
+          APK=source/autoresponder-pro/android/app/build/outputs/apk/debug/app-debug.apk
+          SIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          "$SIGNER" verify --print-certs "$APK" | tee certificate.txt
+          grep -q "3cb9c0c03c588efc15061123c7faafe2fefef1d1" certificate.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | grep "package: name='com.autoresponder.pro' versionCode='20' versionName='0.6.5'"
+      - name: Upload regression test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-065-test-results
+          path: source/autoresponder-pro/android/app/build/test-results/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Upload APK only after all verification steps
+        uses: actions/upload-artifact@v4
+        with:
+          name: AutoResponder-Pro-v0.6.5-APK
+          path: source/autoresponder-pro/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
