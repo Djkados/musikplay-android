@@ -21,16 +21,16 @@ jobs:
           mkdir -p release-files
           gh run download 38327015656 --repo "$GITHUB_REPOSITORY" --name AutoResponder-Pro-v0.6.9-APK --dir release-files
           mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.9.apk
-          echo "7e7fdfb01ad9bc4ade7fddc20dce78cf3068cc0f21f8d59f43cdfdbabf5fd5e8  release-files/AutoResponder-Pro-v0.6.8.apk" | sha256sum -c -
+          echo "7e7fdfb01ad9bc4ade7fddc20dce78cf3068cc0f21f8d59f43cdfdbabf5fd5e8  release-files/AutoResponder-Pro-v0.6.9.apk" | sha256sum -c -
       - name: Publish direct browser APK download
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG=autoresponder-pro-v0.6.9
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.8.apk --clobber --repo "$GITHUB_REPOSITORY"
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.9.apk --clobber --repo "$GITHUB_REPOSITORY"
           else
-            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.8.apk \
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.9.apk \
               --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
               --title "AutoResponder Pro v0.6.8 - Android APK" \
