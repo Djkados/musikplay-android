@@ -16,7 +16,7 @@ new='''        // Keycap emojis and ordinary punctuation must not break a select
         // A bare digit is a bank choice ONLY if a menu was actually sent to
         // this chat; otherwise "1" may mean a business or food quantity.
         val option=clean.replace(Regex("[^a-z0-9áéíóú ]+")," ")
-            .replace(Regex("\\s+")," ").trim()
+            .replace(Regex(" +")," ").trim()
         val shortcut=if(pendingMenu)when(option){
             "1","uno","opcion 1","opción 1","opcion uno","opción uno",
                 "el 1","la 1","la primera","primera"->"nequi"
