@@ -91,10 +91,16 @@ internal object GreetingReplies {
 }
 ''',encoding="utf-8")
 
-change("NativeAutoReplyEngine.kt",'''val greeting=n in setOf("hola","buenas","buenos dias",
-                "buenas tardes","buenas noches","gracias","ok","listo","si")''',
-'''val greeting=GreetingReplies.pure(m) ||
-                n in setOf("gracias","ok","listo","si")''',"more polite greeting variants")
+# This is the existing fallback greeting classifier; keep the source's
+# other recognition rules unchanged and broaden only stand-alone greetings.
+import re
+p=src/"NativeAutoReplyEngine.kt"
+s=p.read_text(encoding="utf-8")
+pattern=r'val greeting=n in setOf\([\s\S]{0,300}?\)'
+assert len(re.findall(pattern,s))==1,("greeting fallback",len(re.findall(pattern,s)))
+s=re.sub(pattern,'val greeting=GreetingReplies.pure(m) || n in setOf("gracias","ok","listo","si")',
+    s,count=1)
+p.write_text(s,encoding="utf-8")
 change("NativeAutoReplyEngine.kt",'''"movieplay" -> "¡Hola! 😊 Dime qué plataforma necesitas y te paso los precios."''',
 '''"movieplay" -> GreetingReplies.message(business,now)''',"movieplay personalized time greeting")
 change("NativeAutoReplyEngine.kt",'''"tresm" -> "¡Hola! 😊 Te paso el menú: https://lastresm.netlify.app\\n¿Qué te gustaría pedir?"''',
