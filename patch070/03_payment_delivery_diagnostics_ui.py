@@ -7,7 +7,7 @@ def edit(a,b,label):
  assert s.count(a)==1,(label,s.count(a))
  s=s.replace(a,b,1)
 
-edit("i.autoStatus==='no_quick_reply'?' · WhatsApp no ofreció respuesta directa':''",
+edit("i.autoStatus==='no_quick_reply'?' · WhatsApp no ofreció respuesta directa':",
 '''i.autoStatus==='no_quick_reply'?(i.manualPaymentReply?
        ' · ⚠️ Banco reconocido, pero WhatsApp no permitió responder automáticamente':
        ' · WhatsApp no ofreció respuesta directa'):''',
