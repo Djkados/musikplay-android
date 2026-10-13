@@ -36,4 +36,5 @@ jobs:
               --title "AutoResponder Pro v0.6.9 - Android APK" \
               --notes "v0.6.9: responde saludos por hora, sigue conversaciones de compra y ofrece medios de pago tras elegir un plan; solucionado 1/1️⃣/opcion uno para Nequi y opciones 2/3/4, con contexto separado por chat y WhatsApp. Conserva contactos vendedores, renovaciones, atencion humana y cuentas de pago compartidas. Pruebas Android y web y firma APK verificadas. No modifica produccion/main."
           fi
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --title "AutoResponder Pro v0.6.9 - Android APK"
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
