@@ -49,13 +49,12 @@ s=s[:start]+accepted+s[end:]
 p.write_text(s,encoding="utf-8")
 
 # An imageTag is optional artwork metadata, not a sold-out stock indicator.
-change("GuidedAssistant.kt",'''if(quote!=null && quote.imageTag.isBlank())
+change("GuidedAssistant.kt",'''if(quote!=null && !quote.available)
                 "Este plan figura como no disponible. Puedes preguntarnos por otra opción."
             else "Dime qué plan y duración prefieres, y te paso los medios de pago. 😊\\n"+
                 "Yo verifico disponibilidad y pago antes de entregarlo."''',
-'''if(quote!=null && LocalCatalog.matched(config,business,message).none {
-                    it.optBoolean("active",false) && it.optLong("price",0L)>0L
-                })"Este plan no está disponible en este momento. ¿Quieres otra opción?"
+'''if(quote!=null && !quote.available)
+                "Este plan figura como no disponible. Puedes preguntarnos por otra opción."
             else if(quote!=null && ConversationFlow.remember(config,business,message,
                     "Compra guiada; pendiente de confirmación")?.stage=="payment_offer")
                 "¿Te paso los medios de pago? 😊\\nAntes de entregarlo verifico disponibilidad y pago."
