@@ -103,8 +103,14 @@ s=re.sub(pattern,'val greeting=GreetingReplies.pure(m) || n in setOf("gracias","
 p.write_text(s,encoding="utf-8")
 change("NativeAutoReplyEngine.kt",'''"movieplay" -> "¡Hola! 😊 Dime qué plataforma necesitas y te paso los precios."''',
 '''"movieplay" -> GreetingReplies.message(business,now)''',"movieplay personalized time greeting")
-change("NativeAutoReplyEngine.kt",'''"tresm" -> "¡Hola! 😊 Te paso el menú: https://lastresm.netlify.app\\n¿Qué te gustaría pedir?"''',
-'''"tresm" -> GreetingReplies.message(business,now)''',"Las Tres M personalized greeting")
+# Replace only the greeting fallback for Las Tres M, not food-order data.
+p=src/"NativeAutoReplyEngine.kt"
+s=p.read_text(encoding="utf-8")
+after=s.index('''"movieplay" -> GreetingReplies.message(business,now)''')
+start=s.index('''"tresm" -> "¡Hola!''',after)
+end=s.index("\\n",start) if False else s.index('\n',start)
+s=s[:start]+'''"tresm" -> GreetingReplies.message(business,now)'''+s[end:]
+p.write_text(s,encoding="utf-8")
 change("WhatsAppNotificationListener.kt",'''                    val greetingText=NativeAutoReplyEngine.normalize(message)
                     val genericHello=greetingText in setOf("hola","buenas","buenos dias",
                         "buenas tardes","buenas noches","hola buenas")''',
