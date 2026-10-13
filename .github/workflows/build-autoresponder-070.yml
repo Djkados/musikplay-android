@@ -127,6 +127,11 @@ jobs:
           python patch070/02_bank_choice_regression.py
           python patch070/03_payment_delivery_diagnostics_ui.py
           python patch070/04_version.py
+      - name: Validate runtime checkout and time
+        run: |
+          echo "AutoResponder v0.6.10 build starting"
+          date -u
+          test -f patch070/04_version.py
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
