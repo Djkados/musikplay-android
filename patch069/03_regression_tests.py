@@ -132,6 +132,7 @@ s=s.rstrip()[:-1]+'''
     @Test fun selectedNequiWorksWithLostBusinessStateOrHumanHandoff() {
         val c=config()
         c.getJSONObject("settings").put("requireAllowlist",false)
+            .getJSONObject("autoReplies").put("normal",true)
         c.put("payments",JSONObject().put("movieplay",JSONObject()
             .put("holder","Titular de prueba")
             .put("nequi",JSONObject().put("number","3000000000"))
