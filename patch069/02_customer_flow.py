@@ -115,4 +115,19 @@ change("WhatsAppNotificationListener.kt",'''                    val greetingText
                     val genericHello=greetingText in setOf("hola","buenas","buenos dias",
                         "buenas tardes","buenas noches","hola buenas")''',
 '''                    val genericHello=GreetingReplies.pure(message)''',"greeting throttled by chat, not by text variant")
+# Phrases such as "quiero Netflix Premium 30 días" are real purchase
+# intent only when an owner-approved product from that business matches.
+# Generic greetings or a bare "quiero" never become a purchase.
+p=src/"GuidedAssistant.kt"
+s=p.read_text(encoding="utf-8")
+needle='''        if(!wantsOrder)return null'''
+replacement='''        val wantsNamedProduct=business=="movieplay" &&
+            Regex("\\b(quiero|quisiera|necesito|dame|me das)\\b").containsMatchIn(n) &&
+            LocalCatalog.matched(config,business,message).any {
+                it.optBoolean("active",false)
+            }
+        if(!wantsOrder && !wantsNamedProduct)return null'''
+assert s.count(needle)==1,("GuidedAssistant intent",s.count(needle))
+p.write_text(s.replace(needle,replacement,1),encoding="utf-8")
+
 print("0.6.9: short time-aware greetings; active single-plan quotes ask permission for payment; yes/de una leads to correct menu.")
