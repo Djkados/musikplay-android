@@ -1,0 +1,41 @@
+name: Download verified AutoResponder Pro v0.6.10 APK
+on:
+  push:
+    branches: [fix/autoresponder-070-payment-name]
+    paths:
+      - .github/workflows/publish-autoresponder-070.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch exact APK from passed tests and check digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release-files
+          gh run download 38472785219 --repo "$GITHUB_REPOSITORY" \
+            --name AutoResponder-Pro-v0.6.10-APK --dir release-files
+          mv release-files/app-debug.apk release-files/AutoResponder-Pro-v0.6.10.apk
+          echo "37ca3a876efc185ce5cf78cb4a9f6059c4ebd904a8adfc83bed56526c46b8049  release-files/AutoResponder-Pro-v0.6.10.apk" | sha256sum -c -
+      - name: Publish direct Chrome-compatible APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.10
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-files/AutoResponder-Pro-v0.6.10.apk \
+              --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release-files/AutoResponder-Pro-v0.6.10.apk \
+              --repo "$GITHUB_REPOSITORY" \
+              --target 01664817828f0bd75773481f9838705300eedd47 \
+              --title "AutoResponder Pro v0.6.10 - Android APK" \
+              --notes "Fix: WhatsApp payment methods by names Bancolombia, Banco Colombia, Nequi, DaviPlata or numeric options. Distinct repeated customer messages no longer blocked five minutes. Same-chat RemoteInput retry and visible manual recovery when WhatsApp has no quick-reply. Protects receipt media and existing vendor/contact picker, learning and renewal logic. Android tests and fixed dev signing passed; production/main not changed."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,url
