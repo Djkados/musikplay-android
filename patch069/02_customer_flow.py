@@ -121,7 +121,7 @@ change("WhatsAppNotificationListener.kt",'''                    val greetingText
 p=src/"GuidedAssistant.kt"
 s=p.read_text(encoding="utf-8")
 needle='''        if(!wantsOrder)return null'''
-replacement='''        val wantsNamedProduct=business=="movieplay" &&
+replacement=r'''        val wantsNamedProduct=business=="movieplay" &&
             Regex("\\b(quiero|quisiera|necesito|dame|me das)\\b").containsMatchIn(n) &&
             LocalCatalog.matched(config,business,message).any {
                 it.optBoolean("active",false)
