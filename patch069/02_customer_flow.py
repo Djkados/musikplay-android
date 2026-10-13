@@ -25,11 +25,13 @@ change("ConversationFlow.kt",'''        val stage=when{
                 chosen.optLong("price",0L)>0L &&
                 (requested!=null || matches.size==1) -> "payment_offer"
             business=="movieplay" -> "plan"''',"remember exact plan for payment consent")
-change("ConversationFlow.kt",'''            if(stage=="payment_offer" &&
-                n in setOf("si","claro","dale","listo","por favor","porfa",
-                    "si quiero","quiero pagar","enviame los medios")){
-                val pay=PaymentReplies.reply(config,business,"medios de pago")?:return null''',
-'''            if(stage=="payment_offer" &&
+# Replace only the contextual payment-consent arm; the rest of the customer
+# conversation engine stays as built by previous versions.
+p=src/"ConversationFlow.kt"
+s=p.read_text(encoding="utf-8")
+start=s.index('''            if(stage=="payment_offer" &&''')
+end=s.index('''        } else if(business=="tresm"){''',start)
+accepted='''            if(stage=="payment_offer" &&
                 n in setOf("si","sii","siii","claro","claro que si","dale",
                     "de una","listo","por favor","porfa","si porfa","si por favor",
                     "ok","bueno","perfecto","hagale","si quiero","quiero pagar",
@@ -37,7 +39,14 @@ change("ConversationFlow.kt",'''            if(stage=="payment_offer" &&
                     "enviamelos","si envialos","dale pasame los datos",
                     "si mandame los datos")){
                 val pay=PaymentReplies.reply(config,business,"medios de pago",
-                    casual=true)?:return null''',"affirmative payment permission")
+                    casual=true)?:return null
+                return Response(pay.text,productId,"payment_menu",
+                    reason="Cliente solicitó medios de pago")
+            }
+'''
+assert s.count('''            if(stage=="payment_offer" &&''')==1
+s=s[:start]+accepted+s[end:]
+p.write_text(s,encoding="utf-8")
 
 # An imageTag is optional artwork metadata, not a sold-out stock indicator.
 change("GuidedAssistant.kt",'''if(quote!=null && quote.imageTag.isBlank())
