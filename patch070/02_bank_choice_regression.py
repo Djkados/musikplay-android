@@ -45,6 +45,9 @@ p.write_text(s,encoding="utf-8")
 
 p=native/"NativeAutoReplyEngineTest.kt"
 s=p.read_text(encoding="utf-8")
+needle="import org.junit.Assert.assertTrue\n"
+assert s.count(needle)==1
+s=s.replace(needle,needle+"import org.junit.Assert.assertNotNull\n",1)
 assert s.rstrip().endswith("}")
 s=s.rstrip()[:-1]+r'''
     @Test fun bankNameAfterPaymentMenuRoutesBeforeHumanPauseAndSellerSilence() {
