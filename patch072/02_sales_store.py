@@ -31,7 +31,7 @@ internal object Sales360Store {
             .take(12).joinToString(""){"%02x".format(it)}
     private fun clean(raw:JSONArray,now:Long):JSONArray{
         val entries=(0 until raw.length()).mapNotNull{raw.optJSONObject(it)}
-            .filter{it.optLong("updatedAt",0L) in (now-TTL)..now}
+            .filter{it.optLong("updatedAt",0L) in (now-TTL)..(now+5L*60L*1000L)}
             .sortedByDescending{it.optLong("updatedAt",0L)}.take(LIMIT)
         return JSONArray().also { next-> entries.forEach{next.put(it)} }
     }
