@@ -155,7 +155,20 @@ change(p,'''    if(a==='refresh-inbox'){''',
 change(p,'''    if(t.id==='ovMode'){''',
 '''    if(t.id==='sales360Filter'){runtime.sales360Filter=t.value;render();return;}
     if(t.id==='ovMode'){''',"Ventas360 filter")
+styles=web/"styles.css"
+styles.write_text(styles.read_text(encoding="utf-8")+"""
+/* Ventas 360: mobile-first cards and actions without horizontal clipping. */
+.sales-lead .between{flex-wrap:wrap;align-items:flex-start}
+.sales-lead .between strong{min-width:0;overflow-wrap:anywhere;flex:1}
+.sales-lead .pill{white-space:normal;max-width:100%;line-height:1.4}
+.sales-lead .row{flex-wrap:wrap;align-items:stretch}
+.sales-lead .row .btn{min-height:42px;white-space:normal;text-align:center}
+.sales-lead summary{cursor:pointer;font-size:12px;color:#8eeaba;margin:8px 0}
+.sales-lead details[open] .message{max-height:270px;overflow:auto}
+@media(max-width:700px){.sales-lead .row .btn{flex:1 1 135px}}
+""",encoding="utf-8")
 for name in ["index.html","app.js","sales-360.js"]:
     (root/"android/app/src/main/assets"/name).write_text(
         (web/name).read_text(encoding="utf-8"),encoding="utf-8")
+(root/"android/app/src/main/assets/styles.css").write_text(styles.read_text(encoding="utf-8"),encoding="utf-8")
 print("0.6.12 sales dashboard: isolated native leads, manual WhatsApp follow-up and statuses.")
