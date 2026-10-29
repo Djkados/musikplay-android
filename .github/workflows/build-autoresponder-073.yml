@@ -133,6 +133,8 @@ jobs:
           python patch072/03_sales_dashboard.py
           python patch072/04_tests_version.py
           python patch073/01_netflix_clarity.py
+          python patch073/02_disney_scope.py
+          python patch073/03_disney_followup_tests.py
       - name: Validate runtime checkout and time
         run: |
           echo "AutoResponder v0.6.13 build starting"
@@ -152,6 +154,7 @@ jobs:
           node --check web/schedule-engine.js
           node --check web/learning-engine.js
           node --check web/netflix-international.js
+          node --check web/disney-plan-scope.js
           node --check web/sales-360.js
           node tests/smoke.test.cjs
           node tests/learning.test.cjs
@@ -160,6 +163,7 @@ jobs:
           node tests/combo_sales_071.test.cjs
           node tests/ventas360_072.test.cjs
           node tests/netflix_clarity_073.test.cjs
+          node tests/disney_precision_073.test.cjs
           node tests/workflow.test.cjs
           node tests/schedules.test.cjs
       - name: Check native replies, Android integration and compile APK
