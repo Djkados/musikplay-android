@@ -145,8 +145,8 @@ change(app,'''    if(t.id==='sales360Filter'){runtime.sales360Filter=t.value;ren
 '''    if(t.id==='diag074Filter'){runtime.diagnostics074Filter=t.value;render();return;}
     if(t.id==='sales360Filter'){runtime.sales360Filter=t.value;render();return;}''',
 "diagnostic filtering")
-change(app,'''      '<button class="btn soft" data-go="aprendizaje">Centro de aprendizaje</button>''',
-'''      '<button class="btn soft" data-go="diagnostico074">🛠 Diagnóstico de respuestas</button>'+
+change(app,'''      '<div class="row"><button class="btn soft" data-go="aprendizaje">Centro de aprendizaje</button>''',
+'''      '<div class="row"><button class="btn soft" data-go="diagnostico074">🛠 Diagnóstico de respuestas</button>'+
       '<button class="btn soft" data-go="aprendizaje">Centro de aprendizaje</button>''',
 "activity links diagnostics")
 change(app,'''AutoResponder Pro v0.6.13''','''AutoResponder Pro v0.6.14''',
