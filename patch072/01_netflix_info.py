@@ -6,7 +6,7 @@ def change(path,old,new,label):
  s=path.read_text(encoding="utf-8")
  assert s.count(old)==1,(label,s.count(old))
  path.write_text(s.replace(old,new,1),encoding="utf-8")
-DEFAULT="En MoviePlay, Netflix Internacional identifica una modalidad de cuenta gestionada en otra región. Frente a los planes habituales, pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega."
+DEFAULT="En MoviePlay, Netflix Internacional identifica una cuenta de una región fuera de Colombia; Netflix habitual corresponde a la modalidad Colombia. Pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega."
 (native/"NetflixInternationalInfo.kt").write_text(r'''package com.autoresponder.pro
 
 import org.json.JSONObject
@@ -15,7 +15,7 @@ import java.util.Locale
 
 /** Owner-configurable, safety-conscious FAQ; price always comes from current catalog. */
 internal object NetflixInternationalInfo {
-    const val DEFAULT = "En MoviePlay, Netflix Internacional identifica una modalidad de cuenta gestionada en otra región. Frente a los planes habituales, pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega."
+    const val DEFAULT = "En MoviePlay, Netflix Internacional identifica una cuenta de una región fuera de Colombia; Netflix habitual corresponde a la modalidad Colombia. Pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega."
     private fun norm(s:String):String=Normalizer.normalize(s.lowercase(Locale.ROOT),Normalizer.Form.NFD)
         .replace(Regex("\\p{M}+"),"").replace(Regex("[^a-z0-9 ]+")," ")
         .replace(Regex(" +")," ").trim()
@@ -61,7 +61,7 @@ change(native/"NativeAutoReplyEngine.kt",'''        if(business=="movieplay" && 
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;
 if(root)root.NetflixInternationalInfo=api;})(typeof window!=='undefined'?window:null,function(){
 'use strict';
-const DEFAULT='En MoviePlay, Netflix Internacional identifica una modalidad de cuenta gestionada en otra región. Frente a los planes habituales, pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega.';
+const DEFAULT='En MoviePlay, Netflix Internacional identifica una cuenta de una región fuera de Colombia; Netflix habitual corresponde a la modalidad Colombia. Pueden cambiar las condiciones de acceso y verificación según el dispositivo y la cuenta. No significa automáticamente más calidad, más películas ni que no existan restricciones de hogar. Confirmamos la compatibilidad antes de la entrega.';
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .replace(/[^a-z0-9 ]+/g,' ').replace(/ +/g,' ').trim();
 const question=message=>{
