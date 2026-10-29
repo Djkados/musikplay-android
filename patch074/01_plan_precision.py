@@ -6,6 +6,10 @@ web=root/"web"
 assets=root/"android/app/src/main/assets"
 def replace(path,old,new,label):
     s=path.read_text(encoding="utf-8")
+    if s.count(old)!=1:
+        doubled=old.replace(chr(92),chr(92)*2)
+        if s.count(doubled)==1:
+            old=doubled
     assert s.count(old)==1,(label,s.count(old),str(path))
     path.write_text(s.replace(old,new,1),encoding="utf-8")
 
@@ -164,7 +168,7 @@ flow=native/"ConversationFlow.kt"
 replace(flow,'''    private fun norm(s:String)=NativeAutoReplyEngine.normalize(s)
         .replace(Regex("[^a-z0-9 ]+")," ").replace(Regex("\\s+")," ").trim()''',
 '''    private fun norm(s:String)=PlanPrecision074.norm(s)''',"Flow normalization")
-replace(flow,'''        val narrowed=if(qualifiers.isEmpty())items else items.filter{p->
+replace(flow,r'''        val narrowed=if(qualifiers.isEmpty())items else items.filter{p->
             qualifiers.any{Regex("\\b"+it+"\\b").containsMatchIn(norm(p.optString("name")))}
         }.ifEmpty{items}
         return narrowed.firstOrNull()''',
