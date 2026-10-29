@@ -1,0 +1,45 @@
+name: Publish verified AutoResponder Pro v0.6.14 APK
+on:
+  push:
+    branches: [fix/autoresponder-074-inteligencia-diagnosticos]
+    paths: [.github/workflows/publish-autoresponder-074.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact verified build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release
+          gh run download 40827841871 -R "$GITHUB_REPOSITORY" -n AutoResponder-Pro-v0.6.14-APK -D release
+          mv release/app-debug.apk release/AutoResponderPro_0614.apk
+      - name: Verify content, Android identifier and signing certificate
+        run: |
+          APK=release/AutoResponderPro_0614.apk
+          echo 'f73020fdd416f671a363a298b6694ee47bc51808034af69501d689ba3c8d3de8  release/AutoResponderPro_0614.apk' | sha256sum -c -
+          SIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          "$SIGNER" verify --print-certs "$APK" | tee certificate.txt
+          grep -q '3cb9c0c03c588efc15061123c7faafe2fefef1d1' certificate.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | grep "package: name='com.autoresponder.pro' versionCode='29' versionName='0.6.14'"
+      - name: Publish stable GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.14
+          if gh release view "$TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release/AutoResponderPro_0614.apk --clobber -R "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release/AutoResponderPro_0614.apk \
+              -R "$GITHUB_REPOSITORY" \
+              --target 6bdb74c7fb0b5083414751f511b721cec5506165 \
+              --title 'AutoResponder Pro v0.6.14 — Inteligencia y diagnóstico' \
+              --notes 'APK Android firmada, verificada y compatible con la actualización de la v0.6.13. Reconocimiento de planes, memoria contextual y diagnóstico local de respuestas. Envíos por notificaciones sujetos a las limitaciones de WhatsApp.'
+          fi
+          gh release view "$TAG" -R "$GITHUB_REPOSITORY" --json url,assets
