@@ -167,14 +167,7 @@ flow=native/"ConversationFlow.kt"
 replace(flow,'''    private fun norm(s:String)=NativeAutoReplyEngine.normalize(s)
         .replace(Regex("[^a-z0-9 ]+")," ").replace(Regex("\\s+")," ").trim()''',
 '''    private fun norm(s:String)=PlanPrecision074.norm(s)''',"Flow normalization")
-replace(flow,r'''        val narrowed=if(qualifiers.isEmpty())items else items.filter{p->
-            qualifiers.any{Regex("\\b"+it+"\\b").containsMatchIn(norm(p.optString("name")))}
-        }.ifEmpty{items}
-        return narrowed.firstOrNull()''',
-'''        val narrowed=if(qualifiers.isEmpty())items else items.filter{p->
-            qualifiers.any{Regex("\\b"+it+"\\b").containsMatchIn(norm(p.optString("name")))}
-        }
-        return narrowed.firstOrNull()''',"no fallback to invalid plan")
+
 replace(flow,'''        val chosen=option(dated,message)?:return null''',
 '''        val chosen=option(dated,message)?:return null''',"ensure exact option anchor")
 # A new product question must be treated independently of old chat memory.
