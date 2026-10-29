@@ -254,8 +254,10 @@ replace(app,'''    if(!choices.length&&requested)
         requested.toUpperCase()+". ¿Quieres consultar otra duración?",
         imageTag:"",catalogId:"",available:false};''',
 '''    if(!choices.length && plan)
-      return {reply:"🎬 *MOVIEPLAY*\\n\\nNo encuentro esa duración del servicio seleccionado. "+
-        "¿Quieres consultar otra duración?",
+      return {reply:"🎬 *MOVIEPLAY*\\n\\n"+
+        (requested?"No encuentro esa duración de Disney "+requested.toUpperCase()+".":
+          "No encuentro esa duración del servicio seleccionado.")+
+        " ¿Quieres consultar otra duración?",
         imageTag:"",catalogId:"",available:false};''',"web duration exact clarification")
 combojs=web/"combo-sales.js"
 replace(combojs,'''const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();''',
