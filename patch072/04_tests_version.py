@@ -102,7 +102,7 @@ for(const question of [
   '¿Qué diferencia hay entre Netflix normal y Netflix internacional?',
   'NETFLIX INTERNACIONAL qué significa',
   'Explícame Netflix Internacional'
-])assert.match(N.answer(cat,question),/cuenta gestionada en otra región/);
+])assert.match(N.answer(cat,question),/fuera de Colombia/);
 assert.match(N.answer(cat,'Qué es Netflix Internacional'),/\$18\.000/);
 assert.equal(N.answer(cat,'cuánto vale netflix internacional'),null);
 assert.equal(N.answer(cat,'Quiero Netflix 30 días y Disney'),null);
