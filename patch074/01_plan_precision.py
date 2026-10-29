@@ -127,12 +127,11 @@ local=native/"LocalCatalog.kt"
 replace(local,'''    private fun norm(s:String):String=Normalizer.normalize(s.lowercase(Locale.ROOT),Normalizer.Form.NFD)
         .replace(Regex("\\p{M}+"),"").replace(Regex("[^a-z0-9]+")," ").trim()''',
 '''    private fun norm(s:String):String=PlanPrecision074.norm(s)''',"catalog normalization")
-replace(local,'''        items(config,business).filter{matches(it,message)}
-''',
+replace(local,'''        DisneyPlanScope.filter(business,message,
+            items(config,business).filter{matches(it,message)})''',
 '''        PlanPrecision074.filter(business,message,
             DisneyPlanScope.filter(business,message,
-                items(config,business).filter{matches(it,message)}))
-''',"catalog filter exact")
+                items(config,business).filter{matches(it,message)}))''',"catalog filter exact")
 replace(local,'''        val scoped=DisneyPlanScope.filter(business,message,hits)
 ''',
 '''        val scoped=PlanPrecision074.filter(business,message,
