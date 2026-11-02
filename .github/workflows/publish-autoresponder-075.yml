@@ -1,0 +1,45 @@
+name: Publish verified AutoResponder Pro v0.6.15 APK
+on:
+  push:
+    branches: [fix/autoresponder-075-hbo-max-aliases]
+    paths: [.github/workflows/publish-autoresponder-075.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact verified build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p release
+          gh run download 41495878823 -R "$GITHUB_REPOSITORY" -n AutoResponder-Pro-v0.6.15-APK -D release
+          mv release/app-debug.apk release/AutoResponderPro_0615.apk
+      - name: Verify content, Android identifier and signing certificate
+        run: |
+          APK=release/AutoResponderPro_0615.apk
+          echo '0fdfb90e106d3a37e9240cac7d4deff40d343cb2569420d96abbd2f3fec3c782  release/AutoResponderPro_0615.apk' | sha256sum -c -
+          SIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          "$SIGNER" verify --print-certs "$APK" | tee certificate.txt
+          grep -q '3cb9c0c03c588efc15061123c7faafe2fefef1d1' certificate.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | grep "package: name='com.autoresponder.pro' versionCode='30' versionName='0.6.15'"
+      - name: Publish stable GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=autoresponder-pro-v0.6.15
+          if gh release view "$TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release/AutoResponderPro_0615.apk --clobber -R "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release/AutoResponderPro_0615.apk \
+              -R "$GITHUB_REPOSITORY" \
+              --target 2ee25a4b39b23ddcd7c068973785c9706414c6d8 \
+              --title 'AutoResponder Pro v0.6.15 — HBO, HBO Max y Max' \
+              --notes 'APK Android firmada, verificada y compatible con la actualización de la v0.6.14. HBO, HBO Max y Max reconocidos como el mismo servicio; planes Estándar/Premium y cotizaciones de combos sin duplicar el catálogo. Envíos por notificaciones sujetos a las limitaciones de WhatsApp.'
+          fi
+          gh release view "$TAG" -R "$GITHUB_REPOSITORY" --json url,assets
